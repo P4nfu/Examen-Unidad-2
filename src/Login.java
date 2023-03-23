@@ -9,7 +9,13 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class Login extends JFrame {
-public Login() {
+	
+	//VARIABLES GLOBALES
+	private String anterior;
+	private String actual;
+	private JPanel panel;
+	
+	public Login() {
 		
 		//Crear ventana
 		this.setVisible(true);
@@ -18,12 +24,10 @@ public Login() {
 		this.setTitle("Formulario inicial");
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLocation(150, 150);
-		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		
-		//colocar color al fondo
-		this.getContentPane().setBackground(Color.decode("#B3FFF1"));
+		//SPLASH////////////////////////////////////////////////////////////////////
+		
 		
 		//splat
 		JPanel splat = new JPanel();
@@ -86,43 +90,58 @@ public Login() {
 		
 		//panel de inicio de sesion
 
-				JLabel etiqueTitulo = new JLabel("Iniciar sesión",JLabel.CENTER);
-				etiqueTitulo.setFont(new Font("HELVETICA",Font.BOLD,35));
-				etiqueTitulo.setSize(230,32);
-				etiqueTitulo.setLocation(135,75);
-				inicio.add(etiqueTitulo);
+		JLabel etiqueTitulo = new JLabel("Iniciar sesión",JLabel.CENTER);
+		etiqueTitulo.setFont(new Font("HELVETICA",Font.BOLD,35));
+		etiqueTitulo.setSize(230,32);
+		etiqueTitulo.setLocation(135,75);
+		inicio.add(etiqueTitulo);
 				
-				JLabel etiqueUsuario = new JLabel("Escriba su nombre:");
-				etiqueUsuario.setFont(new Font("Arial",Font.PLAIN,18));
-				etiqueUsuario.setSize(300,23);
-				etiqueUsuario.setLocation(100,150);
-				inicio.add(etiqueUsuario);
+		JLabel etiqueUsuario = new JLabel("Escriba su nombre:");
+		etiqueUsuario.setFont(new Font("Arial",Font.PLAIN,18));
+		etiqueUsuario.setSize(300,23);
+		etiqueUsuario.setLocation(100,150);
+		inicio.add(etiqueUsuario);
+		
+		JTextField nombreUsuario = new JTextField();
+		nombreUsuario.setSize(300,25);
+		nombreUsuario.setLocation(100,180);
+		inicio.add(nombreUsuario);
+		
+		JLabel etiqueContraseñaREG = new JLabel("Escriba su contraseña:");
+		etiqueContraseñaREG.setFont(new Font("Arial",Font.PLAIN,18));
+		etiqueContraseñaREG.setSize(300,23);
+		etiqueContraseñaREG.setLocation(100,210);
+		inicio.add(etiqueContraseñaREG);
 				
-				JTextField nombreUsuario = new JTextField();
-				nombreUsuario.setSize(300,25);
-				nombreUsuario.setLocation(100,180);
-				inicio.add(nombreUsuario);
-				
-				JLabel etiqueContraseñaREG = new JLabel("Escriba su contraseña:");
-				etiqueContraseñaREG.setFont(new Font("Arial",Font.PLAIN,18));
-				etiqueContraseñaREG.setSize(300,23);
-				etiqueContraseñaREG.setLocation(100,210);
-				inicio.add(etiqueContraseñaREG);
-				
-				JPasswordField contraseñaINI = new JPasswordField();
-				contraseñaINI.setSize(300,25);
-				contraseñaINI.setLocation(100,240);
-				inicio.add(contraseñaINI);
-				
-				JButton iniciarSesionBtn = new JButton("Iniciar sesión");
-				iniciarSesionBtn.setSize(150,30);
-				iniciarSesionBtn.setLocation(175,320);
-				inicio.add(iniciarSesionBtn);
+		JPasswordField contraseñaINI = new JPasswordField();
+		contraseñaINI.setSize(300,25);
+		contraseñaINI.setLocation(100,240);
+		inicio.add(contraseñaINI);
+		
+		JButton iniciarSesionBtn = new JButton("Iniciar sesión");
+		iniciarSesionBtn.setSize(150,30);
+		iniciarSesionBtn.setLocation(175,320);
+		inicio.add(iniciarSesionBtn);
 		
 		
 		
 		
 		
 		this.repaint();
-}
+	}
+	
+	public void limpiarPaneles() {
+		
+		//if y cositas
+		
+	}
+	
+	public JPanel pantallaSplash() {
+		JPanel panelSplash = new JPanel();
+		
+		
+		
+		return panelSplash;
+	}
+	
 }
