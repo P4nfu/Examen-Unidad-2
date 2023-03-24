@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -47,6 +49,15 @@ public class Login extends JFrame {
 			this.revalidate();
 		}
 		
+		if (actual.equals("login")) {
+			panel = login();
+			
+			this.add(panel);
+			
+			this.repaint();
+			this.revalidate();
+		}
+		
 	}
 	
 	public JPanel splash() {
@@ -61,6 +72,13 @@ public class Login extends JFrame {
 		splash.setSize(500,700);
 		splash.setLocation(0,0);
 		
+		JLabel etiqueSplash = new JLabel("Splash"); //PRUEBA DE SPLASH PANFU
+		etiqueSplash.setSize(200,50);
+		etiqueSplash.setLocation(10,10);
+		etiqueSplash.setForeground(Color.black);
+		etiqueSplash.setFont(new Font("Arial Bold",Font.PLAIN,20));
+		splash.add(etiqueSplash);
+		
 		try {
 			this.add(splash);
 			Thread.sleep(5000);
@@ -69,15 +87,83 @@ public class Login extends JFrame {
 			
 		}
 		
+		anterior = actual;
+		actual = "login";
+		
+		limpiarPaneles();
+		
 		return splash;
 	}
 	
-	public JPanel pantallaSplash() {
-		JPanel panelSplash = new JPanel();
+	public JPanel login() {
+		anterior = actual;
+		actual = "login";
 		
+		JPanel login = new JPanel();
+		login.setSize(500,700);
+		login.setBackground(Color.decode("#B3FFF1"));
+		login.setVisible(true);
+		login.setLayout(null);
+		login.setLocation(0,0);
 		
+		//SUBTITULOS Y ELEMENTOS PARA INGRESAR DATOS//////////////////////////////////////////////////////
 		
-		return panelSplash;
+		JLabel etiqueTitulo = new JLabel("Accede a tu cuenta");
+		etiqueTitulo.setSize(200,50);
+		etiqueTitulo.setLocation(10,10);
+		etiqueTitulo.setForeground(Color.black);
+		etiqueTitulo.setFont(new Font("Arial Bold",Font.PLAIN,20));
+		login.add(etiqueTitulo);
+		
+		JLabel etiqueNombreUsuario = new JLabel("Nombre de usuario");
+		etiqueNombreUsuario.setSize(200,50);
+		etiqueNombreUsuario.setLocation(10,60);
+		etiqueNombreUsuario.setForeground(Color.black);
+		etiqueNombreUsuario.setFont(new Font("Arial Bold",Font.PLAIN,20));
+		login.add(etiqueNombreUsuario);
+		
+		JTextField ingreNombre = new JTextField();
+		ingreNombre.setSize(200,40);
+		ingreNombre.setLocation(10,110);
+		login.add(ingreNombre);
+		
+		JLabel etiqueContrasena = new JLabel("Contraseña");
+		etiqueContrasena.setSize(200,50);
+		etiqueContrasena.setLocation(10,170);
+		etiqueContrasena.setForeground(Color.black);
+		etiqueContrasena.setFont(new Font("Arial Bold",Font.PLAIN,20));
+		login.add(etiqueContrasena);
+		
+		JTextField ingreContrasena = new JTextField();
+		ingreContrasena.setSize(200,40);
+		ingreContrasena.setLocation(10,220);
+		login.add(ingreContrasena);
+		
+		//BOTONES//
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setSize(150,50);
+		btnCancelar.setLocation(10,300);
+		login.add(btnCancelar);
+		
+		JButton btnInicarSesion = new JButton("Iniciar Sesión");
+		btnInicarSesion.setSize(150,50);
+		btnInicarSesion.setLocation(200,300);
+		login.add(btnInicarSesion);
+		
+		//ACCIONES DE LOS BOTONES///////////////////////////////////////////////////////////////////////
+		btnInicarSesion.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				
+			}
+		});
+		
+		this.add(login);
+		
+		return login;
 	}
 	
 }
