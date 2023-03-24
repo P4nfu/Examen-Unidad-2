@@ -2,6 +2,10 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,9 +20,10 @@ public class Login extends JFrame {
 	private String anterior;
 	private String actual;
 	private JPanel panel;
+	private File archivo = new File("users.txt");
 	
-	public Login() {
-		
+	public Login() throws IOException {
+
 		//Crear ventana
 		this.setVisible(true);
 		this.setSize(500,700);
@@ -29,6 +34,7 @@ public class Login extends JFrame {
 		this.setLocationRelativeTo(null);
 		
 		//INICIO DE LA APLICACION
+		crearDocumentoTxt();
 		splash();
 		
 		this.repaint();
@@ -51,6 +57,15 @@ public class Login extends JFrame {
 		
 		if (actual.equals("login")) {
 			panel = login();
+			
+			this.add(panel);
+			
+			this.repaint();
+			this.revalidate();
+		}
+		
+		if (actual.equals("menu")) {
+			panel = menu();
 			
 			this.add(panel);
 			
@@ -155,15 +170,45 @@ public class Login extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
-				
+				anterior = actual;
+				actual = "menu";
+				limpiarPaneles();
 				
 			}
 		});
 		
-		this.add(login);
-		
 		return login;
+	}
+	
+	public JPanel menu() {
+		
+		JPanel menu = new JPanel();
+		menu.setSize(500,700);
+		//menu.setBackground(Color.decode("#B3FFF1"));
+		menu.setBackground(Color.red);
+		menu.setVisible(true);
+		menu.setLayout(null);
+		menu.setLocation(0,0);
+		
+		
+		
+		return menu;
+	}
+	
+	public void crearDocumentoTxt() throws IOException {//CREA EL DOCUMENTO DE TEXTO SI NO EXISTE Y AGREGA UN USUARIO PREDIFINIDO
+		if (!archivo.exists()) {
+			FileWriter escritor;
+			PrintWriter linea;
+			
+			try {
+				archivo.createNewFile();
+				escritor = new FileWriter(archivo,true);
+				linea = new PrintWriter(escritor);
+				linea.println("Jonathan"+"-"+"Soto Muños"+"-"+"jsoto@uabcs.mx"+"-"+"password123");
+				linea.close();
+				escritor.close();
+			}catch(Exception e) {}
+		}
 	}
 	
 }
