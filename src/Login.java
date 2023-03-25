@@ -1,12 +1,16 @@
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -17,8 +21,7 @@ import javax.swing.JTextField;
 public class Login extends JFrame {
 	
 	//VARIABLES GLOBALES
-	private String anterior;
-	private String actual;
+	private String anterior, actual;
 	private JPanel panel;
 	private File archivo = new File("users.txt");
 	
@@ -33,7 +36,7 @@ public class Login extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		
-		//INICIO DE LA APLICACION
+		//Splash
 		crearDocumentoTxt();
 		splash();
 		
@@ -84,15 +87,51 @@ public class Login extends JFrame {
 		splash.setLayout(null);
 		splash.setBackground(Color.decode("#B3FFF1"));
 		splash.setVisible(true);
-		splash.setSize(500,700);
+		splash.setSize(800,800);
 		splash.setLocation(0,0);
 		
-		JLabel etiqueSplash = new JLabel("Splash"); //PRUEBA DE SPLASH PANFU
-		etiqueSplash.setSize(200,50);
-		etiqueSplash.setLocation(10,10);
-		etiqueSplash.setForeground(Color.black);
-		etiqueSplash.setFont(new Font("Arial Bold",Font.PLAIN,20));
-		splash.add(etiqueSplash);
+		//logo
+		
+		 File file = new File("\"C:\\Users\\panfu\\eclipse-workspace\\Examen Unidad 2\\src\\amongus.jpg\"");
+	        BufferedImage bufferedImage = ImageIO.read(file);
+
+	        ImageIcon imageIcon = new ImageIcon(bufferedImage);
+	        JFrame jFrame = new JFrame();
+
+	        jFrame.setLayout(new FlowLayout());
+	        
+	        jFrame.setSize(500, 500);
+	        JLabel jLabel = new JLabel();
+
+	        jLabel.setIcon(imageIcon);
+	        jFrame.add(jLabel);
+	        jFrame.setVisible(true);
+
+
+		
+		//textos splash
+		JLabel splash1 = new JLabel("Creado por: "); //PRUEBA DE SPLASH PANFU
+		splash1.setSize(200,50);
+		splash1.setLocation(190,560);
+		splash1.setForeground(Color.black);
+		splash1.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		splash.add(splash1);
+		
+		JLabel splash2 = new JLabel("Adriana Noemi Garcia Benitez"); 
+		splash2.setSize(300,50);
+		splash2.setLocation(110,580);
+		splash2.setForeground(Color.black);
+		splash2.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		splash.add(splash2);
+		
+		JLabel splash3 = new JLabel("David Alejandro Castro Montaño"); 
+		splash3.setSize(300,50);
+		splash3.setLocation(100,600);
+		splash3.setForeground(Color.black);
+		splash3.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		splash.add(splash3);
+		
+		
 		
 		try {
 			this.add(splash);
@@ -127,14 +166,14 @@ public class Login extends JFrame {
 		etiqueTitulo.setSize(200,50);
 		etiqueTitulo.setLocation(10,10);
 		etiqueTitulo.setForeground(Color.black);
-		etiqueTitulo.setFont(new Font("Arial Bold",Font.PLAIN,20));
+		etiqueTitulo.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		login.add(etiqueTitulo);
 		
 		JLabel etiqueNombreUsuario = new JLabel("Nombre de usuario");
 		etiqueNombreUsuario.setSize(200,50);
 		etiqueNombreUsuario.setLocation(10,60);
 		etiqueNombreUsuario.setForeground(Color.black);
-		etiqueNombreUsuario.setFont(new Font("Arial Bold",Font.PLAIN,20));
+		etiqueNombreUsuario.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		login.add(etiqueNombreUsuario);
 		
 		JTextField ingreNombre = new JTextField();
@@ -146,7 +185,7 @@ public class Login extends JFrame {
 		etiqueContrasena.setSize(200,50);
 		etiqueContrasena.setLocation(10,170);
 		etiqueContrasena.setForeground(Color.black);
-		etiqueContrasena.setFont(new Font("Arial Bold",Font.PLAIN,20));
+		etiqueContrasena.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		login.add(etiqueContrasena);
 		
 		JTextField ingreContrasena = new JTextField();
