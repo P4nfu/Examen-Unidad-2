@@ -78,7 +78,7 @@ public class Login extends JFrame {
 		
 	}
 	
-	public JPanel splash() {
+	public JPanel splash() throws IOException {
 		anterior = actual;
 		actual = "splash";
 		
@@ -92,20 +92,21 @@ public class Login extends JFrame {
 		
 		//logo
 		
-		 File file = new File("\"C:\\Users\\panfu\\eclipse-workspace\\Examen Unidad 2\\src\\amongus.jpg\"");
-	        BufferedImage bufferedImage = ImageIO.read(file);
+		File file = new File("\"C:\\Users\\panfu\\eclipse-workspace\\Examen Unidad 2\\src\\amongus.jpg\"");
+        BufferedImage bufferedImage = ImageIO.read(file);
 
-	        ImageIcon imageIcon = new ImageIcon(bufferedImage);
-	        JFrame jFrame = new JFrame();
+        ImageIcon imageIcon = new ImageIcon(bufferedImage);
+        JFrame jFrame = new JFrame();
 
-	        jFrame.setLayout(new FlowLayout());
-	        
-	        jFrame.setSize(500, 500);
-	        JLabel jLabel = new JLabel();
+        jFrame.setLayout(new FlowLayout());
+        
+        jFrame.setSize(500, 500);
+        JLabel jLabel = new JLabel();
 
-	        jLabel.setIcon(imageIcon);
-	        jFrame.add(jLabel);
-	        jFrame.setVisible(true);
+        jLabel.setIcon(imageIcon);
+        jFrame.add(jLabel);
+        jFrame.setVisible(true);
+
 
 
 		
@@ -135,7 +136,7 @@ public class Login extends JFrame {
 		
 		try {
 			this.add(splash);
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 			this.remove(splash);
 		}catch(InterruptedException ex) {
 			
@@ -164,44 +165,44 @@ public class Login extends JFrame {
 		
 		JLabel etiqueTitulo = new JLabel("Accede a tu cuenta");
 		etiqueTitulo.setSize(200,50);
-		etiqueTitulo.setLocation(10,10);
+		etiqueTitulo.setLocation(150,10);
 		etiqueTitulo.setForeground(Color.black);
-		etiqueTitulo.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		etiqueTitulo.setFont(new Font("ABeeZee",Font.BOLD,20));
 		login.add(etiqueTitulo);
 		
 		JLabel etiqueNombreUsuario = new JLabel("Nombre de usuario");
 		etiqueNombreUsuario.setSize(200,50);
-		etiqueNombreUsuario.setLocation(10,60);
+		etiqueNombreUsuario.setLocation(150,350);
 		etiqueNombreUsuario.setForeground(Color.black);
 		etiqueNombreUsuario.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		login.add(etiqueNombreUsuario);
 		
 		JTextField ingreNombre = new JTextField();
-		ingreNombre.setSize(200,40);
-		ingreNombre.setLocation(10,110);
+		ingreNombre.setSize(390,40);
+		ingreNombre.setLocation(40,390);
 		login.add(ingreNombre);
 		
-		JLabel etiqueContrasena = new JLabel("Contraseña");
-		etiqueContrasena.setSize(200,50);
-		etiqueContrasena.setLocation(10,170);
+		JLabel etiqueContrasena = new JLabel("Contraseña de acceso:");
+		etiqueContrasena.setSize(250,50);
+		etiqueContrasena.setLocation(135,420);
 		etiqueContrasena.setForeground(Color.black);
 		etiqueContrasena.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		login.add(etiqueContrasena);
 		
 		JTextField ingreContrasena = new JTextField();
-		ingreContrasena.setSize(200,40);
-		ingreContrasena.setLocation(10,220);
+		ingreContrasena.setSize(390,40);
+		ingreContrasena.setLocation(40,460);
 		login.add(ingreContrasena);
 		
 		//BOTONES//
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setSize(150,50);
-		btnCancelar.setLocation(10,300);
+		btnCancelar.setLocation(40,520);
 		login.add(btnCancelar);
 		
 		JButton btnInicarSesion = new JButton("Iniciar Sesión");
 		btnInicarSesion.setSize(150,50);
-		btnInicarSesion.setLocation(200,300);
+		btnInicarSesion.setLocation(280,520);
 		login.add(btnInicarSesion);
 		
 		//ACCIONES DE LOS BOTONES///////////////////////////////////////////////////////////////////////
