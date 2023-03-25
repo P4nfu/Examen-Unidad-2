@@ -78,7 +78,7 @@ public class Login extends JFrame {
 		
 	}
 	
-	public JPanel splash() throws IOException {
+	public JPanel splash() {
 		anterior = actual;
 		actual = "splash";
 		
@@ -205,7 +205,7 @@ public class Login extends JFrame {
 		btnInicarSesion.setLocation(280,520);
 		login.add(btnInicarSesion);
 		
-		//ACCIONES DE LOS BOTONES///////////////////////////////////////////////////////////////////////
+		//Action Listeners
 		btnInicarSesion.addActionListener(new ActionListener() {
 			
 			@Override
@@ -224,8 +224,7 @@ public class Login extends JFrame {
 		
 		JPanel menu = new JPanel();
 		menu.setSize(500,700);
-		//menu.setBackground(Color.decode("#B3FFF1"));
-		menu.setBackground(Color.red);
+		menu.setBackground(Color.decode("#B3FFF1"));
 		menu.setVisible(true);
 		menu.setLayout(null);
 		menu.setLocation(0,0);
@@ -235,7 +234,8 @@ public class Login extends JFrame {
 		return menu;
 	}
 	
-	public void crearDocumentoTxt() throws IOException {//CREA EL DOCUMENTO DE TEXTO SI NO EXISTE Y AGREGA UN USUARIO PREDIFINIDO
+	//crear un file en caso de que no exista
+	public void crearDocumentoTxt() throws IOException {
 		if (!archivo.exists()) {
 			FileWriter escritor;
 			PrintWriter linea;
@@ -244,7 +244,7 @@ public class Login extends JFrame {
 				archivo.createNewFile();
 				escritor = new FileWriter(archivo,true);
 				linea = new PrintWriter(escritor);
-				linea.println("Jonathan"+"-"+"Soto Muños"+"-"+"jsoto@uabcs.mx"+"-"+"password123");
+				linea.println("Jonathan"+"-"+"Soto Muñoz"+"-"+"jsoto@uabcs.mx"+"-"+"password123");
 				linea.close();
 				escritor.close();
 			}catch(Exception e) {}
