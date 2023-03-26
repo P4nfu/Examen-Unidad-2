@@ -12,6 +12,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -396,7 +399,7 @@ public class Login extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					actualizarDatos(ingreNombre.getText(),ingreApellidos.getText(),ingreCorreo.getText(),ingreContrasena.getText());
+					actualizarDatos(ingreNombre.getText(),ingreApellidos.getText(),ingreCorreo.getText(),correoQueIngresoAlSistema,ingreContrasena.getText());
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -430,40 +433,18 @@ public class Login extends JFrame {
 			if(temp!=null)
 				buscador = temp.split("-");
 		}
+		bf.close();
 		
 		return resultado;
 	}
 	
-	public void actualizarDatos(String nombre,String apellidos,String correo,String contrasena) throws IOException {
-		FileWriter escritor;
-		PrintWriter linea;
-		BufferedReader bf = new BufferedReader(new FileReader(archivo));
-		String temp = bf.readLine();
-		String[] buscador = temp.split("-");
+	public void actualizarDatos(String nombre,String apellidos,String correo,String antiguoCorreo,String contrasena) throws IOException {
 		
 		if (correoQueIngresoAlSistema.equals(correo)) {
-			JOptionPane.showMessageDialog(null,"Es necesario cambiar el correo para realizar cambios","La informacion no se pudo actualizar",JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(null,"Es necesario cambiar el correo para realizar modificaciones","La informacion no se pudo actualizar",JOptionPane.WARNING_MESSAGE);
 		}else {
-			while(temp!=null) {
-				
-				if (buscador[2].equals(correo)) {
-					
-					escritor = new FileWriter(archivo,true);
-					linea = new PrintWriter(escritor);
-					
-					linea.close();
-					escritor.close();
-					
-					nombreQueIngresoAlSistema = buscador[0];
-					apellidosQueIngresoAlSistema = buscador[1];
-					correoQueIngresoAlSistema = buscador[2];
-					contrasenaQueIngresoAlSistema = buscador[3];
-				}
-		
-				temp = bf.readLine();//iterador
-				if(temp!=null)
-					buscador = temp.split("-");
-			}
+			modificarArchivo(archivo, nombre, apellidos, correo, antiguoCorreo, contrasena);
+			JOptionPane.showMessageDialog(null,"Datos actualizados"," ",JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 	}
@@ -482,6 +463,72 @@ public class Login extends JFrame {
 				escritor.close();
 			}catch(Exception e) {}
 		}
+	}
+	
+	public void modificarArchivo(File fileAntiguo,String nuevoNombre,String nuevosApellidos,String nuevoCorreo,String antiguoCorreo,String nuevaContrasena) throws IOException {
+		//NUEVO ARCHIVO Y LECTOR DEL DOCUMENTO TXT
+		Random numaleatorio = new Random(3816L);
+		String nFnuevo = "auxiliar"+".txt";
+		System.out.println(nFnuevo+" <--------------");
+		File nuevoArchivo = new File(nFnuevo);
+		if (!nuevoArchivo.exists())
+			nuevoArchivo.createNewFile();
+		BufferedReader br;
+		
+		//ESCRITOR DE DOCUMENTO
+		FileWriter escritor;
+		PrintWriter txtLinea;
+		
+		try {
+			
+			if (fileAntiguo.exists()) {
+				br = new BufferedReader(new FileReader(fileAntiguo));
+				
+				String linea;
+				
+				while((linea=br.readLine())!=null) {
+					String[] buscador = linea.split("-");
+					
+					if (buscador[2].equals(antiguoCorreo)) {
+						ingresarDatos(nuevoArchivo, nuevoNombre, nuevosApellidos, nuevoCorreo, nuevaContrasena);
+					}
+					else {
+						escritor = new FileWriter(nuevoArchivo,true);
+						txtLinea = new PrintWriter(escritor);
+						txtLinea.println(linea);
+						txtLinea.close();
+						escritor.close();
+					}
+				}
+				br.close();
+				
+				if (fileAntiguo.delete()) {
+					System.out.println("El archivo se borro");
+				}else {
+					System.out.println("No se borro el srchivo");
+				}
+				
+				nuevoArchivo.renameTo(fileAntiguo);
+				
+			}
+			
+		}catch(Exception e) {}
+		
+	}
+	
+	
+	public void ingresarDatos(File archivoIN,String nombre,String apellidos,String correo,String contrasena) throws IOException {
+		FileWriter escritor;
+		PrintWriter linea;
+		
+		if (archivoIN.exists()) {
+			escritor = new FileWriter(archivoIN,true);
+			linea = new PrintWriter(escritor);
+			linea.println(nombre+"-"+apellidos+"-"+correo+"-"+contrasena);
+			linea.close();
+			escritor.close();
+		}
+		
 	}
 	
 }
