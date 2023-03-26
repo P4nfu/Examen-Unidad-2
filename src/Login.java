@@ -97,6 +97,15 @@ public class Login extends JFrame {
 			this.revalidate();
 		}
 		
+		if (actual.equals("crear usuario")) {
+			panel = crearUsuario();
+			
+			this.add(panel);
+			
+			this.repaint();
+			this.revalidate();
+		}
+		
 	}
 	
 	public JPanel splash() throws IOException {
@@ -311,6 +320,23 @@ public class Login extends JFrame {
 			}
 		});
 		
+		itemUsuariosCrearUsua.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				etiqueBienvenida.setVisible(false);
+				
+				anterior = actual;
+				actual = "crear usuario";
+				
+				try {
+					limpiarPaneles();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 		this.repaint();
 		this.revalidate();
 		return menu;
@@ -411,6 +437,105 @@ public class Login extends JFrame {
 		return miCuenta;
 	}
 	
+	public JPanel crearUsuario() {
+		JPanel crearUsuario = new JPanel();
+		crearUsuario.setSize(500,700);
+		crearUsuario.setLocation(0,0);
+		crearUsuario.setVisible(true);
+		crearUsuario.setLayout(null);
+		crearUsuario.setBackground(Color.decode("#B3FFF1"));
+		
+		JLabel etiqueTitulo = new JLabel("Crear Usuario");
+		etiqueTitulo.setSize(200,30);
+		etiqueTitulo.setLocation(10,50);
+		etiqueTitulo.setFont(new Font("Arial",Font.PLAIN,20));
+		crearUsuario.add(etiqueTitulo);
+		
+		//ELEMENTOS DE LA CUENTA DEL USUARIO//
+		JLabel etiqueNombre = new JLabel("Nombre:");
+		etiqueNombre.setSize(200,30);
+		etiqueNombre.setLocation(10,100);
+		etiqueNombre.setFont(new Font("Arial",Font.PLAIN,20));
+		crearUsuario.add(etiqueNombre);
+		
+		JTextField ingreNombre = new JTextField();
+		ingreNombre.setSize(200,30);
+		ingreNombre.setLocation(10,140);
+		crearUsuario.add(ingreNombre);
+		
+		JLabel etiqueApellidos = new JLabel("Apellidos:");
+		etiqueApellidos.setSize(200,30);
+		etiqueApellidos.setLocation(10,180);
+		etiqueApellidos.setFont(new Font("Arial",Font.PLAIN,20));
+		crearUsuario.add(etiqueApellidos);
+		
+		JTextField ingreApellidos = new JTextField();
+		ingreApellidos.setSize(200,30);
+		ingreApellidos.setLocation(10,220);
+		crearUsuario.add(ingreApellidos);
+		
+		JLabel etiqueCorreo = new JLabel("Correo:");
+		etiqueCorreo.setSize(200,30);
+		etiqueCorreo.setLocation(10,260);
+		etiqueCorreo.setFont(new Font("Arial",Font.PLAIN,20));
+		crearUsuario.add(etiqueCorreo);
+		
+		JTextField ingreCorreo = new JTextField();
+		ingreCorreo.setSize(200,30);
+		ingreCorreo.setLocation(10,300);
+		crearUsuario.add(ingreCorreo);
+		
+		JLabel etiqueContrasena = new JLabel("Contraseña:");
+		etiqueContrasena.setSize(200,30);
+		etiqueContrasena.setLocation(10,340);
+		etiqueContrasena.setFont(new Font("Arial",Font.PLAIN,20));
+		crearUsuario.add(etiqueContrasena);
+		
+		JPasswordField ingreContrasena = new JPasswordField();
+		ingreContrasena.setSize(200,30);
+		ingreContrasena.setLocation(10,380);
+		crearUsuario.add(ingreContrasena);
+		
+		JLabel etiqueConfirmarContrasena = new JLabel("Confirmar Contraseña:");
+		etiqueConfirmarContrasena.setSize(200,30);
+		etiqueConfirmarContrasena.setLocation(10,420);
+		etiqueConfirmarContrasena.setFont(new Font("Arial",Font.PLAIN,20));
+		crearUsuario.add(etiqueConfirmarContrasena);
+		
+		JPasswordField ingreConfirmarContrasena = new JPasswordField();
+		ingreConfirmarContrasena.setSize(200,30);
+		ingreConfirmarContrasena.setLocation(10,460);
+		crearUsuario.add(ingreConfirmarContrasena);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setSize(200,50);
+		btnCancelar.setLocation(10,500);
+		crearUsuario.add(btnCancelar);
+		
+		JButton btnActualizarDatos = new JButton("Crear Usuario");
+		btnActualizarDatos.setSize(200,50);
+		btnActualizarDatos.setLocation(250,500);
+		crearUsuario.add(btnActualizarDatos);
+		
+		//ACCIONES DEL BARRA MENU/////////////////////////////////////////////////////////////////////////////
+		btnCancelar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actual = anterior;
+				try {
+					limpiarPaneles();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		this.repaint();
+		this.revalidate();
+		return crearUsuario;
+	}
+	
 	public boolean buscadorDeCorreoYContraseña(String correo,String contraseña) throws IOException {
 		boolean resultado=false;
 		BufferedReader bf = new BufferedReader(new FileReader(archivo));
@@ -491,6 +616,10 @@ public class Login extends JFrame {
 					
 					if (buscador[2].equals(antiguoCorreo)) {
 						ingresarDatos(nuevoArchivo, nuevoNombre, nuevosApellidos, nuevoCorreo, nuevaContrasena);
+						nombreQueIngresoAlSistema = nuevoNombre;
+						apellidosQueIngresoAlSistema = nuevosApellidos;
+						correoQueIngresoAlSistema = nuevoCorreo;
+						contrasenaQueIngresoAlSistema = nuevaContrasena;
 					}
 					else {
 						escritor = new FileWriter(nuevoArchivo,true);
@@ -515,8 +644,7 @@ public class Login extends JFrame {
 		}catch(Exception e) {}
 		
 	}
-	
-	
+		
 	public void ingresarDatos(File archivoIN,String nombre,String apellidos,String correo,String contrasena) throws IOException {
 		FileWriter escritor;
 		PrintWriter linea;
