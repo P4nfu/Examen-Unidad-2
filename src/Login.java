@@ -7,14 +7,10 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -28,12 +24,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 
 public class Login extends JFrame {
 	
 	//VARIABLES GLOBALES
-	private String anterior,actual,correoQueIngresoAlSistema,nombreQueIngresoAlSistema,apellidosQueIngresoAlSistema,contrasenaQueIngresoAlSistema;
+	private String anterior, actual;
 	private JPanel panel;
 	private File archivo = new File("users.txt");
 	
@@ -55,7 +50,7 @@ public class Login extends JFrame {
 		this.repaint();
 	}
 	
-	public void limpiarPaneles() throws IOException {
+	public void limpiarPaneles() {
 		
 		if (panel!=null) {
 			this.remove(panel);
@@ -88,6 +83,7 @@ public class Login extends JFrame {
 			this.revalidate();
 		}
 		
+<<<<<<< HEAD
 		if (actual.equals("cuenta personal")) {
 			panel = miCuentaPersonal();
 			
@@ -106,9 +102,11 @@ public class Login extends JFrame {
 			this.revalidate();
 		}
 		
+=======
+>>>>>>> branch 'main' of https://github.com/P4nfu/Examen-Unidad-2.git
 	}
 	
-	public JPanel splash() throws IOException {
+	public JPanel splash() {
 		anterior = actual;
 		actual = "splash";
 		
@@ -117,11 +115,37 @@ public class Login extends JFrame {
 		splash.setLayout(null);
 		splash.setBackground(Color.decode("#B3FFF1"));
 		splash.setVisible(true);
-		splash.setSize(500,700);
+		splash.setSize(800,800);
 		splash.setLocation(0,0);
 		
+		//logo
+		
+//		File file = new File("\"C:\\Users\\panfu\\eclipse-workspace\\Examen Unidad 2\\src\\amongus.jpg\"");
+//        BufferedImage bufferedImage = ImageIO.read(file);
+//
+//        ImageIcon imageIcon = new ImageIcon(bufferedImage);
+//        JFrame jFrame = new JFrame();
+//
+//        jFrame.setLayout(new FlowLayout());
+//        
+//        jFrame.setSize(500, 500);
+//        JLabel jLabel = new JLabel();
+//
+//        jLabel.setIcon(imageIcon);
+//        jFrame.add(jLabel);
+//        jFrame.setVisible(true);
+		
+        ImageIcon icono = new ImageIcon("\"C:\\Users\\panfu\\eclipse-workspace\\Examen Unidad 2\\src\\amongus.jpg\"");
+        JLabel imagen = new JLabel(icono);
+        getContentPane().add(imagen, BorderLayout.CENTER);
+        
+        setVisible(true);
+
+
+
+		
 		//textos splash
-		JLabel splash1 = new JLabel("Creado por: "); //PRUEBA DE SPLASH PANFU
+		JLabel splash1 = new JLabel("Creado por: ");
 		splash1.setSize(200,50);
 		splash1.setLocation(190,560);
 		splash1.setForeground(Color.black);
@@ -142,12 +166,11 @@ public class Login extends JFrame {
 		splash3.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		splash.add(splash3);
 		
-		this.repaint();
-		this.revalidate();
+		
 		
 		try {
 			this.add(splash);
-			Thread.sleep(5000);
+			Thread.sleep(2000);
 			this.remove(splash);
 		}catch(InterruptedException ex) {
 			
@@ -157,8 +180,6 @@ public class Login extends JFrame {
 		actual = "login";
 		
 		limpiarPaneles();
-		
-		
 		
 		return splash;
 	}
@@ -178,87 +199,77 @@ public class Login extends JFrame {
 		
 		JLabel etiqueTitulo = new JLabel("Accede a tu cuenta");
 		etiqueTitulo.setSize(200,50);
-		etiqueTitulo.setLocation(10,10);
+		etiqueTitulo.setLocation(150,10);
 		etiqueTitulo.setForeground(Color.black);
-		etiqueTitulo.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		etiqueTitulo.setFont(new Font("ABeeZee",Font.BOLD,20));
 		login.add(etiqueTitulo);
 		
 		JLabel etiqueNombreUsuario = new JLabel("Nombre de usuario");
 		etiqueNombreUsuario.setSize(200,50);
-		etiqueNombreUsuario.setLocation(10,60);
+		etiqueNombreUsuario.setLocation(150,350);
 		etiqueNombreUsuario.setForeground(Color.black);
 		etiqueNombreUsuario.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		login.add(etiqueNombreUsuario);
 		
 		JTextField ingreNombre = new JTextField();
-		ingreNombre.setSize(200,40);
-		ingreNombre.setLocation(10,110);
+		ingreNombre.setSize(390,40);
+		ingreNombre.setLocation(40,390);
 		login.add(ingreNombre);
 		
-		JLabel etiqueContrasena = new JLabel("Contraseña");
-		etiqueContrasena.setSize(200,50);
-		etiqueContrasena.setLocation(10,170);
+		JLabel etiqueContrasena = new JLabel("Contraseña de acceso:");
+		etiqueContrasena.setSize(250,50);
+		etiqueContrasena.setLocation(135,420);
 		etiqueContrasena.setForeground(Color.black);
 		etiqueContrasena.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		login.add(etiqueContrasena);
 		
-		JPasswordField ingreContrasena = new JPasswordField();
-		ingreContrasena.setSize(200,40);
-		ingreContrasena.setLocation(10,220);
+		JTextField ingreContrasena = new JTextField();
+		ingreContrasena.setSize(390,40);
+		ingreContrasena.setLocation(40,460);
 		login.add(ingreContrasena);
 		
 		//BOTONES//
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBackground(Color.RED);
 		btnCancelar.setSize(150,50);
-		btnCancelar.setLocation(10,300);
+		btnCancelar.setLocation(40,520);
 		login.add(btnCancelar);
 		
 		JButton btnInicarSesion = new JButton("Iniciar Sesión");
+		btnInicarSesion.setBackground(Color.decode("#75D4F2"));
 		btnInicarSesion.setSize(150,50);
-		btnInicarSesion.setLocation(200,300);
+		btnInicarSesion.setLocation(280,520);
 		login.add(btnInicarSesion);
-		
 		//ACCIONES DE LOS BOTONES///////////////////////////////////////////////////////////////////////
-		btnInicarSesion.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String contraseñaTemp = new String(ingreContrasena.getPassword());
-				
-				if (ingreNombre.getText().length()==0 || contraseñaTemp.length()==0) {
-					JOptionPane.showMessageDialog(null,"Faltan campos por llenar","Error al iniciar sesión",JOptionPane.WARNING_MESSAGE);
-				}else if (archivo.exists()){
-					try {
-						if (buscadorDeCorreoYContraseña(ingreNombre.getText(),contraseñaTemp)) {
-							JOptionPane.showMessageDialog(null,"Bienvenido al sistema"," ",JOptionPane.INFORMATION_MESSAGE);
-							anterior = actual;
-							actual = "menu";
+				btnInicarSesion.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String contraseñaTemp = new String(((JPasswordField) ingreContrasena).getPassword());
+						
+						if (ingreNombre.getText().length()==0 || contraseñaTemp.length()==0) {
+							JOptionPane.showMessageDialog(null,"Faltan campos por llenar","Error al iniciar sesión",JOptionPane.WARNING_MESSAGE);
+						}else if (archivo.exists()){
 							try {
-								limpiarPaneles();
+								if (buscadorDeCorreoYContraseña(ingreNombre.getText(),contraseñaTemp)) {
+									JOptionPane.showMessageDialog(null,"Bienvenido al sistema"," ",JOptionPane.INFORMATION_MESSAGE);
+									anterior = actual;
+									actual = "menu";
+									try {
+										limpiarPaneles();
+									} catch (IOException e1) {
+										e1.printStackTrace();
+									}
+								}else {
+									JOptionPane.showMessageDialog(null,"El usuario y/o contraseña son erroneos","Error al iniciar sesión",JOptionPane.ERROR_MESSAGE);
+								}
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							}
-						}else {
-							JOptionPane.showMessageDialog(null,"El usuario y/o contraseña son erroneos","Error al iniciar sesión",JOptionPane.ERROR_MESSAGE);
-						}
-					} catch (IOException e1) {
-						e1.printStackTrace();
+						}	
+						
 					}
-				}
-				
-				
-				
-			}
-		});
-		
-		btnCancelar.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ingreNombre.setText("");
-				ingreContrasena.setText("");
-			}
-		});
+				});
 		
 		return login;
 	}
@@ -272,54 +283,17 @@ public class Login extends JFrame {
 		menu.setLayout(null);
 		menu.setLocation(0,0);
 		
-		//BARRA DE MENU/////////////////////////////////////////////////////////////////////////////////////////////////////
-		JMenuBar barra = new JMenuBar();
-		barra.setSize(500,25);
-		barra.setLocation(0,0);
-		JMenu barraCuenta = new JMenu("Cuenta");
-		JMenu barraUsuarios = new JMenu("Usuarios");
-		JMenu barraAyuda = new JMenu("Ayuda");
-		barra.add(barraCuenta);
-		barra.add(barraUsuarios);
-		barra.add(barraAyuda);
-		JMenuItem itemCuentaMiCuenta = new JMenuItem("Mi cuenta"); //SE AÑADE A CUENTA 
-		JMenuItem itemCuentaCerrarSesion = new JMenuItem("Cerrar sesión");//SE AÑADE A CUENTA
-		barraCuenta.add(itemCuentaMiCuenta);
-		barraCuenta.add(itemCuentaCerrarSesion);
-		JMenuItem itemUsuariosListaDeUsua = new JMenuItem("Lista de usuarios");//SE AÑADE A USUARIOS
-		JMenuItem itemUsuariosCrearUsua = new JMenuItem("Crear usuarios");//SE AÑADE A USUARIOS
-		barraUsuarios.add(itemUsuariosListaDeUsua);
-		barraUsuarios.add(itemUsuariosCrearUsua);
-		JMenuItem itemAyudaPregunta = new JMenuItem("¿Como crear usuarios?");//SE AÑADE A AYUDA
-		barraAyuda.add(itemAyudaPregunta);
-		this.add(barra);
-		//Fin de la barra menu
 		
-		//Bienvenida
-		JLabel etiqueBienvenida = new JLabel("Bienvenido "+nombreQueIngresoAlSistema);
-		etiqueBienvenida.setSize(200,40);
-		etiqueBienvenida.setLocation(150,150);
-		etiqueBienvenida.setFont(new Font("Arial",Font.PLAIN,20));
-		menu.add(etiqueBienvenida);
+		JLabel us = new JLabel("Bienvenido:");
+		us.setSize(250,50);
+		us.setLocation(135,420);
+		us.setForeground(Color.black);
+		us.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		menu.add(us);
 		
-		//ACCIONES DEL BARRA MENU/////////////////////////////////////////////////////////////////////////////
-		itemCuentaMiCuenta.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				etiqueBienvenida.setVisible(false);
-				
-				anterior = actual;
-				actual = "cuenta personal";
-				
-				try {
-					limpiarPaneles();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		});
+		JMenuBar bar = new JMenuBar();
 		
+<<<<<<< HEAD
 		itemUsuariosCrearUsua.addActionListener(new ActionListener() {
 			
 			@Override
@@ -339,87 +313,42 @@ public class Login extends JFrame {
 		
 		this.repaint();
 		this.revalidate();
+=======
+		JMenu cuenta = new JMenu ("Cuenta");
+		bar.add(cuenta);
+		JMenu user = new JMenu ("Usuario");
+		bar.add(user);
+		JMenu ayuda = new JMenu ("Ayuda");
+		bar.add(ayuda);
+		
+		this.add(bar);
+		
+		
+		//MenuItem
+		JMenuItem iniciar = new JMenuItem("Inicio de sesion");
+		JMenuItem cerrar = new JMenuItem("Cerrar Sesion");
+		JMenuItem cambiar = new JMenuItem("Cambiar Usuario");
+		JMenuItem creaUs = new JMenuItem("Como crear usuario?");
+		JMenuItem acceso = new JMenuItem("Como acceder al sistema?");
+		
+>>>>>>> branch 'main' of https://github.com/P4nfu/Examen-Unidad-2.git
 		return menu;
 	}
-	
-	public JPanel miCuentaPersonal() {
-		JPanel miCuenta = new JPanel();
-		miCuenta.setSize(500,700);
-		miCuenta.setLocation(0,0);
-		miCuenta.setVisible(true);
-		miCuenta.setLayout(null);
-		miCuenta.setBackground(Color.decode("#B3FFF1"));
-		
-		//ELEMENTOS DE LA CUENTA DEL USUARIO//
-		JLabel etiqueNombre = new JLabel("Nombre:");
-		etiqueNombre.setSize(200,30);
-		etiqueNombre.setLocation(10,100);
-		etiqueNombre.setFont(new Font("Arial",Font.PLAIN,20));
-		miCuenta.add(etiqueNombre);
-		
-		JTextField ingreNombre = new JTextField(nombreQueIngresoAlSistema);
-		ingreNombre.setSize(200,30);
-		ingreNombre.setLocation(10,140);
-		miCuenta.add(ingreNombre);
-		
-		JLabel etiqueApellidos = new JLabel("Apellidos:");
-		etiqueApellidos.setSize(200,30);
-		etiqueApellidos.setLocation(10,180);
-		etiqueApellidos.setFont(new Font("Arial",Font.PLAIN,20));
-		miCuenta.add(etiqueApellidos);
-		
-		JTextField ingreApellidos = new JTextField(apellidosQueIngresoAlSistema);
-		ingreApellidos.setSize(200,30);
-		ingreApellidos.setLocation(10,220);
-		miCuenta.add(ingreApellidos);
-		
-		JLabel etiqueCorreo = new JLabel("Correo:");
-		etiqueCorreo.setSize(200,30);
-		etiqueCorreo.setLocation(10,260);
-		etiqueCorreo.setFont(new Font("Arial",Font.PLAIN,20));
-		miCuenta.add(etiqueCorreo);
-		
-		JTextField ingreCorreo = new JTextField(correoQueIngresoAlSistema);
-		ingreCorreo.setSize(200,30);
-		ingreCorreo.setLocation(10,300);
-		miCuenta.add(ingreCorreo);
-		
-		JLabel etiqueContrasena = new JLabel("Contraseña:");
-		etiqueContrasena.setSize(200,30);
-		etiqueContrasena.setLocation(10,340);
-		etiqueContrasena.setFont(new Font("Arial",Font.PLAIN,20));
-		miCuenta.add(etiqueContrasena);
-		
-		JTextField ingreContrasena = new JTextField(contrasenaQueIngresoAlSistema);
-		ingreContrasena.setSize(200,30);
-		ingreContrasena.setLocation(10,380);
-		miCuenta.add(ingreContrasena);
-		
-		JButton btnCancelar = new JButton("Cancelar");
-		btnCancelar.setSize(200,50);
-		btnCancelar.setLocation(10,420);
-		miCuenta.add(btnCancelar);
-		
-		JButton btnActualizarDatos = new JButton("Actualizar Datos");
-		btnActualizarDatos.setSize(200,50);
-		btnActualizarDatos.setLocation(250,420);
-		miCuenta.add(btnActualizarDatos);
-		
-		//ACCIONES DEL BARRA MENU/////////////////////////////////////////////////////////////////////////////
-		btnCancelar.addActionListener(new ActionListener() {
+		public boolean buscadorDeCorreoYContraseña(String correo,String contraseña) throws IOException {
+			boolean resultado=false;
+			BufferedReader bf = new BufferedReader(new FileReader(archivo));
+			String temp = bf.readLine();
+			String[] buscador = temp.split("-");
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				anterior = actual;
-				actual = "menu";
-				try {
-					limpiarPaneles();
-				} catch (IOException e1) {
-					e1.printStackTrace();
+			while(temp!=null) {
+				
+				if (buscador[2].equals(correo)) {
+					if(buscador[3].equals(contraseña)) {
+						resultado = true;
+					}
 				}
-			}
-		});
 		
+<<<<<<< HEAD
 		btnActualizarDatos.addActionListener(new ActionListener() {
 			
 			@Override
@@ -557,24 +486,17 @@ public class Login extends JFrame {
 			temp = bf.readLine();//iterador
 			if(temp!=null)
 				buscador = temp.split("-");
+=======
+				temp = bf.readLine();//iterador
+				if(temp!=null)
+					buscador = temp.split("-");
+>>>>>>> branch 'main' of https://github.com/P4nfu/Examen-Unidad-2.git
 		}
-		bf.close();
+		};
 		
-		return resultado;
-	}
 	
-	public void actualizarDatos(String nombre,String apellidos,String correo,String antiguoCorreo,String contrasena) throws IOException {
-		
-		if (correoQueIngresoAlSistema.equals(correo)) {
-			JOptionPane.showMessageDialog(null,"Es necesario cambiar el correo para realizar modificaciones","La informacion no se pudo actualizar",JOptionPane.WARNING_MESSAGE);
-		}else {
-			modificarArchivo(archivo, nombre, apellidos, correo, antiguoCorreo, contrasena);
-			JOptionPane.showMessageDialog(null,"Datos actualizados"," ",JOptionPane.INFORMATION_MESSAGE);
-		}
-		
-	}
-	
-	public void crearDocumentoTxt() throws IOException {//CREA EL DOCUMENTO DE TEXTO SI NO EXISTE Y AGREGA UN USUARIO PREDIFINIDO
+	//crear un file en caso de que no exista
+	public void crearDocumentoTxt() throws IOException {
 		if (!archivo.exists()) {
 			FileWriter escritor;
 			PrintWriter linea;
@@ -583,13 +505,14 @@ public class Login extends JFrame {
 				archivo.createNewFile();
 				escritor = new FileWriter(archivo,true);
 				linea = new PrintWriter(escritor);
-				linea.println("Jonathan"+"-"+"Soto Muños"+"-"+"jsoto@uabcs.mx"+"-"+"password123");
+				linea.println("Jonathan"+"-"+"Soto Muñoz"+"-"+"jsoto@uabcs.mx"+"-"+"password123");
 				linea.close();
 				escritor.close();
 			}catch(Exception e) {}
 		}
 	}
 	
+<<<<<<< HEAD
 	public void modificarArchivo(File fileAntiguo,String nuevoNombre,String nuevosApellidos,String nuevoCorreo,String antiguoCorreo,String nuevaContrasena) throws IOException {
 		//NUEVO ARCHIVO Y LECTOR DEL DOCUMENTO TXT
 		Random numaleatorio = new Random(3816L);
@@ -659,4 +582,6 @@ public class Login extends JFrame {
 		
 	}
 	
+=======
+>>>>>>> branch 'main' of https://github.com/P4nfu/Examen-Unidad-2.git
 }
