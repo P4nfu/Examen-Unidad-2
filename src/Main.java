@@ -3,7 +3,7 @@ import java.io.IOException;
 public class Main {
 
 //<<<<<<< HEAD
-	public static void main(String[] args) throws IOException {
+	public static void Main(String[] args) throws IOException {
 //=======
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub

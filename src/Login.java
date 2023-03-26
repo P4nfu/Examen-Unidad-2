@@ -124,7 +124,7 @@ public class Login extends JFrame {
 
 		
 		//textos splash
-		JLabel splash1 = new JLabel("Creado por: "); //PRUEBA DE SPLASH PANFU
+		JLabel splash1 = new JLabel("Creado por: ");
 		splash1.setSize(200,50);
 		splash1.setLocation(190,560);
 		splash1.setForeground(Color.black);
@@ -209,11 +209,13 @@ public class Login extends JFrame {
 		
 		//BOTONES//
 		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBackground(Color.RED);
 		btnCancelar.setSize(150,50);
 		btnCancelar.setLocation(40,520);
 		login.add(btnCancelar);
 		
 		JButton btnInicarSesion = new JButton("Iniciar Sesión");
+		btnInicarSesion.setBackground(Color.decode("#75D4F2"));
 		btnInicarSesion.setSize(150,50);
 		btnInicarSesion.setLocation(280,520);
 		login.add(btnInicarSesion);
@@ -243,9 +245,7 @@ public class Login extends JFrame {
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							}
-						}
-						
-						
+						}	
 						
 					}
 				});
@@ -310,6 +310,7 @@ public class Login extends JFrame {
 					buscador = temp.split("-");
 		}
 		};
+		
 	
 	//crear un file en caso de que no exista
 	public void crearDocumentoTxt() throws IOException {
