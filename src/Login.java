@@ -1,24 +1,36 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 public class Login extends JFrame {
 	
 	//VARIABLES GLOBALES
-	private String anterior;
-	private String actual;
+	private String anterior,actual,correoQueIngresoAlSistema,nombreQueIngresoAlSistema,apellidosQueIngresoAlSistema,contrasenaQueIngresoAlSistema;
 	private JPanel panel;
 	private File archivo = new File("users.txt");
 	
@@ -33,14 +45,14 @@ public class Login extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		
-		//INICIO DE LA APLICACION
+		//Splash
 		crearDocumentoTxt();
 		splash();
 		
 		this.repaint();
 	}
 	
-	public void limpiarPaneles() {
+	public void limpiarPaneles() throws IOException {
 		
 		if (panel!=null) {
 			this.remove(panel);
@@ -73,9 +85,18 @@ public class Login extends JFrame {
 			this.revalidate();
 		}
 		
+		if (actual.equals("cuenta personal")) {
+			panel = miCuentaPersonal();
+			
+			this.add(panel);
+			
+			this.repaint();
+			this.revalidate();
+		}
+		
 	}
 	
-	public JPanel splash() {
+	public JPanel splash() throws IOException {
 		anterior = actual;
 		actual = "splash";
 		
@@ -87,12 +108,30 @@ public class Login extends JFrame {
 		splash.setSize(500,700);
 		splash.setLocation(0,0);
 		
-		JLabel etiqueSplash = new JLabel("Splash"); //PRUEBA DE SPLASH PANFU
-		etiqueSplash.setSize(200,50);
-		etiqueSplash.setLocation(10,10);
-		etiqueSplash.setForeground(Color.black);
-		etiqueSplash.setFont(new Font("Arial Bold",Font.PLAIN,20));
-		splash.add(etiqueSplash);
+		//textos splash
+		JLabel splash1 = new JLabel("Creado por: "); //PRUEBA DE SPLASH PANFU
+		splash1.setSize(200,50);
+		splash1.setLocation(190,560);
+		splash1.setForeground(Color.black);
+		splash1.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		splash.add(splash1);
+		
+		JLabel splash2 = new JLabel("Adriana Noemi Garcia Benitez"); 
+		splash2.setSize(300,50);
+		splash2.setLocation(110,580);
+		splash2.setForeground(Color.black);
+		splash2.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		splash.add(splash2);
+		
+		JLabel splash3 = new JLabel("David Alejandro Castro Montaño"); 
+		splash3.setSize(300,50);
+		splash3.setLocation(100,600);
+		splash3.setForeground(Color.black);
+		splash3.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		splash.add(splash3);
+		
+		this.repaint();
+		this.revalidate();
 		
 		try {
 			this.add(splash);
@@ -106,6 +145,8 @@ public class Login extends JFrame {
 		actual = "login";
 		
 		limpiarPaneles();
+		
+		
 		
 		return splash;
 	}
@@ -127,14 +168,14 @@ public class Login extends JFrame {
 		etiqueTitulo.setSize(200,50);
 		etiqueTitulo.setLocation(10,10);
 		etiqueTitulo.setForeground(Color.black);
-		etiqueTitulo.setFont(new Font("Arial Bold",Font.PLAIN,20));
+		etiqueTitulo.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		login.add(etiqueTitulo);
 		
 		JLabel etiqueNombreUsuario = new JLabel("Nombre de usuario");
 		etiqueNombreUsuario.setSize(200,50);
 		etiqueNombreUsuario.setLocation(10,60);
 		etiqueNombreUsuario.setForeground(Color.black);
-		etiqueNombreUsuario.setFont(new Font("Arial Bold",Font.PLAIN,20));
+		etiqueNombreUsuario.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		login.add(etiqueNombreUsuario);
 		
 		JTextField ingreNombre = new JTextField();
@@ -146,10 +187,10 @@ public class Login extends JFrame {
 		etiqueContrasena.setSize(200,50);
 		etiqueContrasena.setLocation(10,170);
 		etiqueContrasena.setForeground(Color.black);
-		etiqueContrasena.setFont(new Font("Arial Bold",Font.PLAIN,20));
+		etiqueContrasena.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		login.add(etiqueContrasena);
 		
-		JTextField ingreContrasena = new JTextField();
+		JPasswordField ingreContrasena = new JPasswordField();
 		ingreContrasena.setSize(200,40);
 		ingreContrasena.setLocation(10,220);
 		login.add(ingreContrasena);
@@ -170,10 +211,40 @@ public class Login extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				anterior = actual;
-				actual = "menu";
-				limpiarPaneles();
+				String contraseñaTemp = new String(ingreContrasena.getPassword());
 				
+				if (ingreNombre.getText().length()==0 || contraseñaTemp.length()==0) {
+					JOptionPane.showMessageDialog(null,"Faltan campos por llenar","Error al iniciar sesión",JOptionPane.WARNING_MESSAGE);
+				}else if (archivo.exists()){
+					try {
+						if (buscadorDeCorreoYContraseña(ingreNombre.getText(),contraseñaTemp)) {
+							JOptionPane.showMessageDialog(null,"Bienvenido al sistema"," ",JOptionPane.INFORMATION_MESSAGE);
+							anterior = actual;
+							actual = "menu";
+							try {
+								limpiarPaneles();
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}else {
+							JOptionPane.showMessageDialog(null,"El usuario y/o contraseña son erroneos","Error al iniciar sesión",JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+				
+				
+				
+			}
+		});
+		
+		btnCancelar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ingreNombre.setText("");
+				ingreContrasena.setText("");
 			}
 		});
 		
@@ -184,15 +255,217 @@ public class Login extends JFrame {
 		
 		JPanel menu = new JPanel();
 		menu.setSize(500,700);
-		//menu.setBackground(Color.decode("#B3FFF1"));
-		menu.setBackground(Color.red);
+		menu.setBackground(Color.decode("#B3FFF1"));
 		menu.setVisible(true);
 		menu.setLayout(null);
 		menu.setLocation(0,0);
 		
+		//BARRA DE MENU/////////////////////////////////////////////////////////////////////////////////////////////////////
+		JMenuBar barra = new JMenuBar();
+		barra.setSize(500,25);
+		barra.setLocation(0,0);
+		JMenu barraCuenta = new JMenu("Cuenta");
+		JMenu barraUsuarios = new JMenu("Usuarios");
+		JMenu barraAyuda = new JMenu("Ayuda");
+		barra.add(barraCuenta);
+		barra.add(barraUsuarios);
+		barra.add(barraAyuda);
+		JMenuItem itemCuentaMiCuenta = new JMenuItem("Mi cuenta"); //SE AÑADE A CUENTA 
+		JMenuItem itemCuentaCerrarSesion = new JMenuItem("Cerrar sesión");//SE AÑADE A CUENTA
+		barraCuenta.add(itemCuentaMiCuenta);
+		barraCuenta.add(itemCuentaCerrarSesion);
+		JMenuItem itemUsuariosListaDeUsua = new JMenuItem("Lista de usuarios");//SE AÑADE A USUARIOS
+		JMenuItem itemUsuariosCrearUsua = new JMenuItem("Crear usuarios");//SE AÑADE A USUARIOS
+		barraUsuarios.add(itemUsuariosListaDeUsua);
+		barraUsuarios.add(itemUsuariosCrearUsua);
+		JMenuItem itemAyudaPregunta = new JMenuItem("¿Como crear usuarios?");//SE AÑADE A AYUDA
+		barraAyuda.add(itemAyudaPregunta);
+		this.add(barra);
+		//Fin de la barra menu
 		
+		//Bienvenida
+		JLabel etiqueBienvenida = new JLabel("Bienvenido "+nombreQueIngresoAlSistema);
+		etiqueBienvenida.setSize(200,40);
+		etiqueBienvenida.setLocation(150,150);
+		etiqueBienvenida.setFont(new Font("Arial",Font.PLAIN,20));
+		menu.add(etiqueBienvenida);
 		
+		//ACCIONES DEL BARRA MENU/////////////////////////////////////////////////////////////////////////////
+		itemCuentaMiCuenta.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				etiqueBienvenida.setVisible(false);
+				
+				anterior = actual;
+				actual = "cuenta personal";
+				
+				try {
+					limpiarPaneles();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		this.repaint();
+		this.revalidate();
 		return menu;
+	}
+	
+	public JPanel miCuentaPersonal() {
+		JPanel miCuenta = new JPanel();
+		miCuenta.setSize(500,700);
+		miCuenta.setLocation(0,0);
+		miCuenta.setVisible(true);
+		miCuenta.setLayout(null);
+		miCuenta.setBackground(Color.decode("#B3FFF1"));
+		
+		//ELEMENTOS DE LA CUENTA DEL USUARIO//
+		JLabel etiqueNombre = new JLabel("Nombre:");
+		etiqueNombre.setSize(200,30);
+		etiqueNombre.setLocation(10,100);
+		etiqueNombre.setFont(new Font("Arial",Font.PLAIN,20));
+		miCuenta.add(etiqueNombre);
+		
+		JTextField ingreNombre = new JTextField(nombreQueIngresoAlSistema);
+		ingreNombre.setSize(200,30);
+		ingreNombre.setLocation(10,140);
+		miCuenta.add(ingreNombre);
+		
+		JLabel etiqueApellidos = new JLabel("Apellidos:");
+		etiqueApellidos.setSize(200,30);
+		etiqueApellidos.setLocation(10,180);
+		etiqueApellidos.setFont(new Font("Arial",Font.PLAIN,20));
+		miCuenta.add(etiqueApellidos);
+		
+		JTextField ingreApellidos = new JTextField(apellidosQueIngresoAlSistema);
+		ingreApellidos.setSize(200,30);
+		ingreApellidos.setLocation(10,220);
+		miCuenta.add(ingreApellidos);
+		
+		JLabel etiqueCorreo = new JLabel("Correo:");
+		etiqueCorreo.setSize(200,30);
+		etiqueCorreo.setLocation(10,260);
+		etiqueCorreo.setFont(new Font("Arial",Font.PLAIN,20));
+		miCuenta.add(etiqueCorreo);
+		
+		JTextField ingreCorreo = new JTextField(correoQueIngresoAlSistema);
+		ingreCorreo.setSize(200,30);
+		ingreCorreo.setLocation(10,300);
+		miCuenta.add(ingreCorreo);
+		
+		JLabel etiqueContrasena = new JLabel("Contraseña:");
+		etiqueContrasena.setSize(200,30);
+		etiqueContrasena.setLocation(10,340);
+		etiqueContrasena.setFont(new Font("Arial",Font.PLAIN,20));
+		miCuenta.add(etiqueContrasena);
+		
+		JTextField ingreContrasena = new JTextField(contrasenaQueIngresoAlSistema);
+		ingreContrasena.setSize(200,30);
+		ingreContrasena.setLocation(10,380);
+		miCuenta.add(ingreContrasena);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setSize(200,50);
+		btnCancelar.setLocation(10,420);
+		miCuenta.add(btnCancelar);
+		
+		JButton btnActualizarDatos = new JButton("Actualizar Datos");
+		btnActualizarDatos.setSize(200,50);
+		btnActualizarDatos.setLocation(250,420);
+		miCuenta.add(btnActualizarDatos);
+		
+		//ACCIONES DEL BARRA MENU/////////////////////////////////////////////////////////////////////////////
+		btnCancelar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				anterior = actual;
+				actual = "menu";
+				try {
+					limpiarPaneles();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		btnActualizarDatos.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					actualizarDatos(ingreNombre.getText(),ingreApellidos.getText(),ingreCorreo.getText(),ingreContrasena.getText());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		this.repaint();
+		this.revalidate();
+		return miCuenta;
+	}
+	
+	public boolean buscadorDeCorreoYContraseña(String correo,String contraseña) throws IOException {
+		boolean resultado=false;
+		BufferedReader bf = new BufferedReader(new FileReader(archivo));
+		String temp = bf.readLine();
+		String[] buscador = temp.split("-");
+		
+		while(temp!=null) {
+			
+			if (buscador[2].equals(correo)) {
+				if(buscador[3].equals(contraseña)) {
+					resultado = true;
+					nombreQueIngresoAlSistema = buscador[0];
+					apellidosQueIngresoAlSistema = buscador[1];
+					correoQueIngresoAlSistema = buscador[2];
+					contrasenaQueIngresoAlSistema = buscador[3];
+				}
+			}
+	
+			temp = bf.readLine();//iterador
+			if(temp!=null)
+				buscador = temp.split("-");
+		}
+		
+		return resultado;
+	}
+	
+	public void actualizarDatos(String nombre,String apellidos,String correo,String contrasena) throws IOException {
+		FileWriter escritor;
+		PrintWriter linea;
+		BufferedReader bf = new BufferedReader(new FileReader(archivo));
+		String temp = bf.readLine();
+		String[] buscador = temp.split("-");
+		
+		if (correoQueIngresoAlSistema.equals(correo)) {
+			JOptionPane.showMessageDialog(null,"Es necesario cambiar el correo para realizar cambios","La informacion no se pudo actualizar",JOptionPane.WARNING_MESSAGE);
+		}else {
+			while(temp!=null) {
+				
+				if (buscador[2].equals(correo)) {
+					
+					escritor = new FileWriter(archivo,true);
+					linea = new PrintWriter(escritor);
+					
+					linea.close();
+					escritor.close();
+					
+					nombreQueIngresoAlSistema = buscador[0];
+					apellidosQueIngresoAlSistema = buscador[1];
+					correoQueIngresoAlSistema = buscador[2];
+					contrasenaQueIngresoAlSistema = buscador[3];
+				}
+		
+				temp = bf.readLine();//iterador
+				if(temp!=null)
+					buscador = temp.split("-");
+			}
+		}
+		
 	}
 	
 	public void crearDocumentoTxt() throws IOException {//CREA EL DOCUMENTO DE TEXTO SI NO EXISTE Y AGREGA UN USUARIO PREDIFINIDO
