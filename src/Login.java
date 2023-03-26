@@ -1,10 +1,13 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +17,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -92,20 +99,26 @@ public class Login extends JFrame {
 		
 		//logo
 		
-		File file = new File("\"C:\\Users\\panfu\\eclipse-workspace\\Examen Unidad 2\\src\\amongus.jpg\"");
-        BufferedImage bufferedImage = ImageIO.read(file);
-
-        ImageIcon imageIcon = new ImageIcon(bufferedImage);
-        JFrame jFrame = new JFrame();
-
-        jFrame.setLayout(new FlowLayout());
+//		File file = new File("\"C:\\Users\\panfu\\eclipse-workspace\\Examen Unidad 2\\src\\amongus.jpg\"");
+//        BufferedImage bufferedImage = ImageIO.read(file);
+//
+//        ImageIcon imageIcon = new ImageIcon(bufferedImage);
+//        JFrame jFrame = new JFrame();
+//
+//        jFrame.setLayout(new FlowLayout());
+//        
+//        jFrame.setSize(500, 500);
+//        JLabel jLabel = new JLabel();
+//
+//        jLabel.setIcon(imageIcon);
+//        jFrame.add(jLabel);
+//        jFrame.setVisible(true);
+		
+        ImageIcon icono = new ImageIcon("\"C:\\Users\\panfu\\eclipse-workspace\\Examen Unidad 2\\src\\amongus.jpg\"");
+        JLabel imagen = new JLabel(icono);
+        getContentPane().add(imagen, BorderLayout.CENTER);
         
-        jFrame.setSize(500, 500);
-        JLabel jLabel = new JLabel();
-
-        jLabel.setIcon(imageIcon);
-        jFrame.add(jLabel);
-        jFrame.setVisible(true);
+        setVisible(true);
 
 
 
@@ -204,18 +217,38 @@ public class Login extends JFrame {
 		btnInicarSesion.setSize(150,50);
 		btnInicarSesion.setLocation(280,520);
 		login.add(btnInicarSesion);
-		
-		//Action Listeners
-		btnInicarSesion.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				anterior = actual;
-				actual = "menu";
-				limpiarPaneles();
-				
-			}
-		});
+		//ACCIONES DE LOS BOTONES///////////////////////////////////////////////////////////////////////
+				btnInicarSesion.addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String contraseñaTemp = new String(((JPasswordField) ingreContrasena).getPassword());
+						
+						if (ingreNombre.getText().length()==0 || contraseñaTemp.length()==0) {
+							JOptionPane.showMessageDialog(null,"Faltan campos por llenar","Error al iniciar sesión",JOptionPane.WARNING_MESSAGE);
+						}else if (archivo.exists()){
+							try {
+								if (buscadorDeCorreoYContraseña(ingreNombre.getText(),contraseñaTemp)) {
+									JOptionPane.showMessageDialog(null,"Bienvenido al sistema"," ",JOptionPane.INFORMATION_MESSAGE);
+									anterior = actual;
+									actual = "menu";
+									try {
+										limpiarPaneles();
+									} catch (IOException e1) {
+										e1.printStackTrace();
+									}
+								}else {
+									JOptionPane.showMessageDialog(null,"El usuario y/o contraseña son erroneos","Error al iniciar sesión",JOptionPane.ERROR_MESSAGE);
+								}
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+						}
+						
+						
+						
+					}
+				});
 		
 		return login;
 	}
@@ -230,9 +263,53 @@ public class Login extends JFrame {
 		menu.setLocation(0,0);
 		
 		
+		JLabel us = new JLabel("Bienvenido:");
+		us.setSize(250,50);
+		us.setLocation(135,420);
+		us.setForeground(Color.black);
+		us.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		menu.add(us);
+		
+		JMenuBar bar = new JMenuBar();
+		
+		JMenu cuenta = new JMenu ("Cuenta");
+		bar.add(cuenta);
+		JMenu user = new JMenu ("Usuario");
+		bar.add(user);
+		JMenu ayuda = new JMenu ("Ayuda");
+		bar.add(ayuda);
+		
+		this.add(bar);
+		
+		
+		//MenuItem
+		JMenuItem iniciar = new JMenuItem("Inicio de sesion");
+		JMenuItem cerrar = new JMenuItem("Cerrar Sesion");
+		JMenuItem cambiar = new JMenuItem("Cambiar Usuario");
+		JMenuItem creaUs = new JMenuItem("Como crear usuario?");
+		JMenuItem acceso = new JMenuItem("Como acceder al sistema?");
 		
 		return menu;
 	}
+		public boolean buscadorDeCorreoYContraseña(String correo,String contraseña) throws IOException {
+			boolean resultado=false;
+			BufferedReader bf = new BufferedReader(new FileReader(archivo));
+			String temp = bf.readLine();
+			String[] buscador = temp.split("-");
+			
+			while(temp!=null) {
+				
+				if (buscador[2].equals(correo)) {
+					if(buscador[3].equals(contraseña)) {
+						resultado = true;
+					}
+				}
+		
+				temp = bf.readLine();//iterador
+				if(temp!=null)
+					buscador = temp.split("-");
+		}
+		};
 	
 	//crear un file en caso de que no exista
 	public void crearDocumentoTxt() throws IOException {
