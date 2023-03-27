@@ -100,6 +100,16 @@ public class Login extends JFrame {
 		if (actual.equals("crear usuario")) {
 			panel = crearUsuario();
 			
+		       
+            this.add(panel);
+            
+            this.repaint();
+            this.revalidate();
+    }
+    
+    if (actual.equals("ayuda")) {
+            panel = ayudaUs();
+			
 			this.add(panel);
 			
 			this.repaint();
@@ -332,6 +342,23 @@ public class Login extends JFrame {
 				}
 			}
 		});
+		   itemAyudaPregunta.addActionListener(new ActionListener() {
+               
+               @Override
+               public void actionPerformed(ActionEvent e) {
+                       etiqueBienvenida.setVisible(false);
+                       
+                       anterior = actual;
+                       actual = "ayuda";
+                       
+                       try {
+                               limpiarPaneles();
+                       } catch (IOException e1) {
+                               e1.printStackTrace();
+                       }
+               }
+       });
+       
 		
 		itemUsuariosCrearUsua.addActionListener(new ActionListener() {
 			
@@ -575,6 +602,9 @@ public class Login extends JFrame {
 		ayuda3.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		ayuda3.add(ayudaUs);
 		
+		this.repaint();
+        this.revalidate();
+        return ayudaUs;
 		
 	}
 	
