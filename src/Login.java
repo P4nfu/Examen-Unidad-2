@@ -584,6 +584,12 @@ public class Login extends JFrame {
 		ayudaUs.setLayout(null);
 		ayudaUs.setBackground(Color.decode("#B3FFF1"));
 		
+		JPanel deco2 = new JPanel ();
+		deco2.setSize(450,300);
+		deco2.setLocation(15,280);
+		deco2.setBackground(Color.decode("#9BDEE6"));
+		deco2.setVisible(true);
+		ayudaUs.add(deco2);
 
 		JLabel ayuda1 = new JLabel("Como crear un usuario?: ");
 		ayuda1.setSize(500,50);
@@ -596,62 +602,55 @@ public class Login extends JFrame {
 		ayuda2.setSize(500,30);
 		ayuda2.setLocation(20,300);
 		ayuda2.setFont(new Font("ABeeZee",Font.PLAIN,20));
-		ayuda2.add(ayudaUs);
+		deco2.add(ayuda2);
 		
 		JLabel ayuda3 = new JLabel("el boton superior.");
 		ayuda3.setSize(500,30);
 		ayuda3.setLocation(45,320);
 		ayuda3.setFont(new Font("ABeeZee",Font.PLAIN,20));
-		ayuda3.add(ayudaUs);;
+		deco2.add(ayuda3);;
 		
 		JLabel ayuda4 = new JLabel("2. Haz click en la opcion crea usuario en ");
 		ayuda4.setSize(500,30);
 		ayuda4.setLocation(20,350);
 		ayuda4.setFont(new Font("ABeeZee",Font.PLAIN,20));
-		ayuda4.add(ayudaUs);
+		deco2.add(ayuda4);
 		
 		JLabel ayuda5 = new JLabel("el menu desplegado ");
 		ayuda5.setSize(500,30);
 		ayuda5.setLocation(45,370);
 		ayuda5.setFont(new Font("ABeeZee",Font.PLAIN,20));
-		ayuda5.add(ayudaUs);
+		deco2.add(ayuda5);
 		
 		JLabel ayuda6 = new JLabel("3. Llena los lugares indicados ");
 		ayuda6.setSize(500,30);
 		ayuda6.setLocation(20,400);
 		ayuda6.setFont(new Font("ABeeZee",Font.PLAIN,20));
-		ayuda6.add(ayudaUs);
+		deco2.add(ayuda6);
 		
 		JLabel ayuda7 = new JLabel("4. Haz click en el boton de crear cuenta ");
 		ayuda7.setSize(500,30);
 		ayuda7.setLocation(20,430);
 		ayuda7.setFont(new Font("ABeeZee",Font.PLAIN,20));
-		ayuda7.add(ayudaUs);
+		deco2.add(ayuda7);
 		
 		JLabel ayuda8 = new JLabel("5. Cuenta creada ");
 		ayuda8.setSize(500,30);
 		ayuda8.setLocation(20,460);
 		ayuda8.setFont(new Font("ABeeZee",Font.PLAIN,20));
-		ayuda8.add(ayudaUs);
+		deco2.add(ayuda8);
 		
 		JButton btnayuda = new JButton("Crea usuario ahora");
 		btnayuda.setSize(200,50);
-		btnayuda.setLocation(150,500);
+		btnayuda.setLocation(150,540);
 		btnayuda.setBackground(Color.decode("#7795FF"));
 		btnayuda.setForeground(Color.decode("#344270"));
-		btnayuda.add(ayudaUs);
-		
-		JPanel deco2 = new JPanel ();
-		deco2.setSize(450,300);
-		deco2.setLocation(15,280);
-		deco2.setBackground(Color.decode("#9BDEE6"));
-		deco2.setVisible(true);
-		deco2.add(ayudaUs);
+		deco2.add(btnayuda);
 		
 		this.repaint();
         this.revalidate();
+        
         return ayudaUs;
-		
 	}
 	
 	public boolean buscadorDeCorreoYContraseña(String correo,String contraseña) throws IOException {
