@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -552,10 +553,10 @@ public class Login extends JFrame {
 		btnCancelar.setLocation(10,500);
 		crearUsuario.add(btnCancelar);
 		
-		JButton btnActualizarDatos = new JButton("Crear Usuario");
-		btnActualizarDatos.setSize(200,50);
-		btnActualizarDatos.setLocation(250,500);
-		crearUsuario.add(btnActualizarDatos);
+		JButton btnCrearUsuarios = new JButton("Crear Usuario");
+		btnCrearUsuarios.setSize(200,50);
+		btnCrearUsuarios.setLocation(250,500);
+		crearUsuario.add(btnCrearUsuarios);
 		
 		//ACCIONES DEL BARRA MENU/////////////////////////////////////////////////////////////////////////////
 		btnCancelar.addActionListener(new ActionListener() {
@@ -571,11 +572,54 @@ public class Login extends JFrame {
 			}
 		});
 		
+		btnCrearUsuarios.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String con = new String(ingreContrasena.getPassword());
+				String conAux = new String(ingreConfirmarContrasena.getPassword());
+				
+				if (ingreNombre.getText().length()!=0 &&
+					ingreApellidos.getText().length()!=0 &&
+					ingreCorreo.getText().length()!=0 &&
+					con.length()!=0 &&
+					conAux.length()!=0) {
+					if (con.equals(conAux)) {
+						try {
+							if (buscarCorreo(ingreCorreo.getText())) {
+								try {
+									ingresarDatos(archivo, ingreNombre.getText(), ingreApellidos.getText(), ingreCorreo.getText(), con);
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								}
+								JOptionPane.showMessageDialog(null,"Se registro el nuevo usuario satisfactoriamente"," ",JOptionPane.INFORMATION_MESSAGE);
+								ingreNombre.setText("");
+								ingreApellidos.setText("");
+								ingreCorreo.setText("");
+								ingreContrasena.setText("");
+								ingreConfirmarContrasena.setText("");
+							}else {
+								JOptionPane.showMessageDialog(null,"El correo ya se encuentra registrado","Error al registrar",JOptionPane.WARNING_MESSAGE);
+							}
+						} catch (HeadlessException e1) {
+							e1.printStackTrace();
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					}else {
+						JOptionPane.showMessageDialog(null,"Las contraseñas no coinciden","Advertencia",JOptionPane.WARNING_MESSAGE);
+					}
+				}else {
+					JOptionPane.showMessageDialog(null,"Todos los elementos deben estar rellenados","Advertencia",JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		
 		this.repaint();
 		this.revalidate();
 		return crearUsuario;
 	}
-	//Menu de ayuda al usuario
+
 	public JPanel ayudaUs() {
 		JPanel ayudaUs = new JPanel();
 		ayudaUs.setSize(500,700);
@@ -777,7 +821,25 @@ public class Login extends JFrame {
 		}catch(Exception e) {}
 		
 	}
+	
+	public boolean buscarCorreo(String correo) throws IOException {
+		boolean resultado=true;
+		File archivoIN = new File("users.txt");
+		BufferedReader bf = new BufferedReader(new FileReader(archivoIN));
+		String linea;
 		
+		while((linea = bf.readLine())!=null) {
+			String[] buscador = linea.split("-");
+			
+			if (correo.equals(buscador[2])) {
+				resultado = false;
+			}
+		}
+		bf.close();
+		
+		return resultado;
+	}
+	
 	public void ingresarDatos(File archivoIN,String nombre,String apellidos,String correo,String contrasena) throws IOException {
 		FileWriter escritor;
 		PrintWriter linea;
