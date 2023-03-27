@@ -225,9 +225,9 @@ public class Login extends JFrame {
 		login.add(btnInicarSesion);
 		
 		JPanel deco1 = new JPanel ();
-		deco1.setSize(300,300);
-		deco1.setLocation(10,400);
-		deco1.setBackground(Color.decode("#8771ED"));
+		deco1.setSize(450,250);
+		deco1.setLocation(15,320);
+		deco1.setBackground(Color.decode("#9BDEE6"));
 		deco1.setVisible(true);
 		login.add(deco1);
 		
