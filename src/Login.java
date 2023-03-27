@@ -106,6 +106,15 @@ public class Login extends JFrame {
 			this.revalidate();
 		}
 		
+		if (actual.equals("ayuda")) {
+			panel = ayudaUs();
+			
+			this.add(panel);
+			
+			this.repaint();
+			this.revalidate();
+		}
+		
 	}
 	
 	public JPanel splash() throws IOException {
@@ -124,21 +133,21 @@ public class Login extends JFrame {
 		JLabel splash1 = new JLabel("Creado por: "); //PRUEBA DE SPLASH PANFU
 		splash1.setSize(200,50);
 		splash1.setLocation(190,560);
-		splash1.setForeground(Color.black);
-		splash1.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		splash1.setForeground(Color.decode("#00290B"));
+		splash1.setFont(new Font("ABeeZee",Font.BOLD,20));
 		splash.add(splash1);
 		
 		JLabel splash2 = new JLabel("Adriana Noemi Garcia Benitez"); 
 		splash2.setSize(300,50);
 		splash2.setLocation(110,580);
-		splash2.setForeground(Color.black);
+		splash2.setForeground(Color.decode("#00290B"));
 		splash2.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		splash.add(splash2);
 		
 		JLabel splash3 = new JLabel("David Alejandro Castro Montaño"); 
 		splash3.setSize(300,50);
 		splash3.setLocation(100,600);
-		splash3.setForeground(Color.black);
+		splash3.setForeground(Color.decode("#00290B"));
 		splash3.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		splash.add(splash3);
 		
@@ -147,7 +156,7 @@ public class Login extends JFrame {
 		
 		try {
 			this.add(splash);
-			Thread.sleep(5000);
+			Thread.sleep(3000);
 			this.remove(splash);
 		}catch(InterruptedException ex) {
 			
@@ -177,46 +186,59 @@ public class Login extends JFrame {
 		//SUBTITULOS Y ELEMENTOS PARA INGRESAR DATOS//////////////////////////////////////////////////////
 		
 		JLabel etiqueTitulo = new JLabel("Accede a tu cuenta");
-		etiqueTitulo.setSize(200,50);
-		etiqueTitulo.setLocation(10,10);
-		etiqueTitulo.setForeground(Color.black);
-		etiqueTitulo.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		etiqueTitulo.setSize(500,50);
+		etiqueTitulo.setLocation(50,10);
+		etiqueTitulo.setForeground(Color.decode("#00290B"));
+		etiqueTitulo.setFont(new Font("ABeeZee",Font.BOLD,40));
 		login.add(etiqueTitulo);
 		
 		JLabel etiqueNombreUsuario = new JLabel("Nombre de usuario");
 		etiqueNombreUsuario.setSize(200,50);
-		etiqueNombreUsuario.setLocation(10,60);
-		etiqueNombreUsuario.setForeground(Color.black);
+		etiqueNombreUsuario.setLocation(37,338);
+		etiqueNombreUsuario.setForeground(Color.decode("#00290B"));
 		etiqueNombreUsuario.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		login.add(etiqueNombreUsuario);
 		
 		JTextField ingreNombre = new JTextField();
-		ingreNombre.setSize(200,40);
-		ingreNombre.setLocation(10,110);
+		ingreNombre.setSize(400,30);
+		ingreNombre.setLocation(37,380);
 		login.add(ingreNombre);
 		
 		JLabel etiqueContrasena = new JLabel("Contraseña");
 		etiqueContrasena.setSize(200,50);
-		etiqueContrasena.setLocation(10,170);
-		etiqueContrasena.setForeground(Color.black);
+		etiqueContrasena.setLocation(37,400);
+		etiqueContrasena.setForeground(Color.decode("#00290B"));
 		etiqueContrasena.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		login.add(etiqueContrasena);
 		
 		JPasswordField ingreContrasena = new JPasswordField();
-		ingreContrasena.setSize(200,40);
-		ingreContrasena.setLocation(10,220);
+		ingreContrasena.setSize(400,30);
+		ingreContrasena.setLocation(37,438);
 		login.add(ingreContrasena);
+		
+		
 		
 		//BOTONES//
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setSize(150,50);
-		btnCancelar.setLocation(10,300);
+		btnCancelar.setLocation(37,500);
+		btnCancelar.setBackground(Color.decode("#F7292C"));
+		btnCancelar.setForeground(Color.decode("#731314"));
 		login.add(btnCancelar);
 		
 		JButton btnInicarSesion = new JButton("Iniciar Sesión");
 		btnInicarSesion.setSize(150,50);
-		btnInicarSesion.setLocation(200,300);
+		btnInicarSesion.setLocation(285,500);
+		btnInicarSesion.setBackground(Color.decode("#7795FF"));
+		btnInicarSesion.setForeground(Color.decode("#344270"));
 		login.add(btnInicarSesion);
+		
+		JPanel deco1 = new JPanel ();
+		deco1.setSize(450,250);
+		deco1.setLocation(15,320);
+		deco1.setBackground(Color.decode("#9BDEE6"));
+		deco1.setVisible(true);
+		login.add(deco1);
 		
 		//ACCIONES DE LOS BOTONES///////////////////////////////////////////////////////////////////////
 		btnInicarSesion.addActionListener(new ActionListener() {
@@ -299,7 +321,7 @@ public class Login extends JFrame {
 		JLabel etiqueBienvenida = new JLabel("Bienvenido "+nombreQueIngresoAlSistema);
 		etiqueBienvenida.setSize(200,40);
 		etiqueBienvenida.setLocation(150,150);
-		etiqueBienvenida.setFont(new Font("Arial",Font.PLAIN,20));
+		etiqueBienvenida.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		menu.add(etiqueBienvenida);
 		
 		//ACCIONES DEL BARRA MENU/////////////////////////////////////////////////////////////////////////////
@@ -337,6 +359,23 @@ public class Login extends JFrame {
 			}
 		});
 		
+		itemAyudaPregunta.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				etiqueBienvenida.setVisible(false);
+				
+				anterior = actual;
+				actual = "ayuda";
+				
+				try {
+					limpiarPaneles();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 		this.repaint();
 		this.revalidate();
 		return menu;
@@ -354,7 +393,7 @@ public class Login extends JFrame {
 		JLabel etiqueNombre = new JLabel("Nombre:");
 		etiqueNombre.setSize(200,30);
 		etiqueNombre.setLocation(10,100);
-		etiqueNombre.setFont(new Font("Arial",Font.PLAIN,20));
+		etiqueNombre.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		miCuenta.add(etiqueNombre);
 		
 		JTextField ingreNombre = new JTextField(nombreQueIngresoAlSistema);
@@ -365,7 +404,7 @@ public class Login extends JFrame {
 		JLabel etiqueApellidos = new JLabel("Apellidos:");
 		etiqueApellidos.setSize(200,30);
 		etiqueApellidos.setLocation(10,180);
-		etiqueApellidos.setFont(new Font("Arial",Font.PLAIN,20));
+		etiqueApellidos.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		miCuenta.add(etiqueApellidos);
 		
 		JTextField ingreApellidos = new JTextField(apellidosQueIngresoAlSistema);
@@ -376,7 +415,7 @@ public class Login extends JFrame {
 		JLabel etiqueCorreo = new JLabel("Correo:");
 		etiqueCorreo.setSize(200,30);
 		etiqueCorreo.setLocation(10,260);
-		etiqueCorreo.setFont(new Font("Arial",Font.PLAIN,20));
+		etiqueCorreo.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		miCuenta.add(etiqueCorreo);
 		
 		JTextField ingreCorreo = new JTextField(correoQueIngresoAlSistema);
@@ -387,7 +426,7 @@ public class Login extends JFrame {
 		JLabel etiqueContrasena = new JLabel("Contraseña:");
 		etiqueContrasena.setSize(200,30);
 		etiqueContrasena.setLocation(10,340);
-		etiqueContrasena.setFont(new Font("Arial",Font.PLAIN,20));
+		etiqueContrasena.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		miCuenta.add(etiqueContrasena);
 		
 		JTextField ingreContrasena = new JTextField(contrasenaQueIngresoAlSistema);
@@ -448,14 +487,14 @@ public class Login extends JFrame {
 		JLabel etiqueTitulo = new JLabel("Crear Usuario");
 		etiqueTitulo.setSize(200,30);
 		etiqueTitulo.setLocation(10,50);
-		etiqueTitulo.setFont(new Font("Arial",Font.PLAIN,20));
+		etiqueTitulo.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		crearUsuario.add(etiqueTitulo);
 		
 		//ELEMENTOS DE LA CUENTA DEL USUARIO//
 		JLabel etiqueNombre = new JLabel("Nombre:");
 		etiqueNombre.setSize(200,30);
 		etiqueNombre.setLocation(10,100);
-		etiqueNombre.setFont(new Font("Arial",Font.PLAIN,20));
+		etiqueNombre.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		crearUsuario.add(etiqueNombre);
 		
 		JTextField ingreNombre = new JTextField();
@@ -466,7 +505,7 @@ public class Login extends JFrame {
 		JLabel etiqueApellidos = new JLabel("Apellidos:");
 		etiqueApellidos.setSize(200,30);
 		etiqueApellidos.setLocation(10,180);
-		etiqueApellidos.setFont(new Font("Arial",Font.PLAIN,20));
+		etiqueApellidos.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		crearUsuario.add(etiqueApellidos);
 		
 		JTextField ingreApellidos = new JTextField();
@@ -477,7 +516,7 @@ public class Login extends JFrame {
 		JLabel etiqueCorreo = new JLabel("Correo:");
 		etiqueCorreo.setSize(200,30);
 		etiqueCorreo.setLocation(10,260);
-		etiqueCorreo.setFont(new Font("Arial",Font.PLAIN,20));
+		etiqueCorreo.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		crearUsuario.add(etiqueCorreo);
 		
 		JTextField ingreCorreo = new JTextField();
@@ -488,7 +527,7 @@ public class Login extends JFrame {
 		JLabel etiqueContrasena = new JLabel("Contraseña:");
 		etiqueContrasena.setSize(200,30);
 		etiqueContrasena.setLocation(10,340);
-		etiqueContrasena.setFont(new Font("Arial",Font.PLAIN,20));
+		etiqueContrasena.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		crearUsuario.add(etiqueContrasena);
 		
 		JPasswordField ingreContrasena = new JPasswordField();
@@ -499,7 +538,7 @@ public class Login extends JFrame {
 		JLabel etiqueConfirmarContrasena = new JLabel("Confirmar Contraseña:");
 		etiqueConfirmarContrasena.setSize(200,30);
 		etiqueConfirmarContrasena.setLocation(10,420);
-		etiqueConfirmarContrasena.setFont(new Font("Arial",Font.PLAIN,20));
+		etiqueConfirmarContrasena.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		crearUsuario.add(etiqueConfirmarContrasena);
 		
 		JPasswordField ingreConfirmarContrasena = new JPasswordField();
@@ -534,6 +573,37 @@ public class Login extends JFrame {
 		this.repaint();
 		this.revalidate();
 		return crearUsuario;
+	}
+	//Menu de ayuda al usuario
+	public JPanel ayudaUs() {
+		JPanel ayudaUs = new JPanel();
+		ayudaUs.setSize(500,700);
+		ayudaUs.setLocation(0,0);
+		ayudaUs.setVisible(true);
+		ayudaUs.setLayout(null);
+		ayudaUs.setBackground(Color.decode("#B3FFF1"));
+		
+		JLabel ayuda1 = new JLabel("Como crear un usuario?: ");
+		ayuda1.setSize(200,30);
+		ayuda1.setLocation(10,50);
+		ayuda1.setFont(new Font("ABeeZee",Font.BOLD,40));
+		ayuda1.add(ayudaUs);
+		
+		JLabel ayuda2 = new JLabel("1. Haz click en el apartado de Usuarios en");
+		ayuda2.setSize(200,30);
+		ayuda2.setLocation(20,50);
+		ayuda2.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		ayuda2.add(ayudaUs);
+		
+		JLabel ayuda3 = new JLabel("1. Haz click en el apartado de Usuarios en");
+		ayuda3.setSize(200,30);
+		ayuda3.setLocation(20,50);
+		ayuda3.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		ayuda3.add(ayudaUs);
+		
+		this.repaint();
+		this.revalidate();
+		return ayudaUs;
 	}
 	
 	public boolean buscadorDeCorreoYContraseña(String correo,String contraseña) throws IOException {
