@@ -454,6 +454,12 @@ public class Ventana extends JFrame implements MouseListener {
 		miCuenta.setBackground(Color.decode("#B3FFF1"));
 		
 		//ELEMENTOS DE LA CUENTA DEL USUARIO//
+		JLabel etiquetitu = new JLabel("Mi cuenta personal",JLabel.CENTER);
+		etiquetitu.setSize(400,50);
+		etiquetitu.setLocation(50,50);
+		etiquetitu.setFont(new Font("ABeeZee",Font.PLAIN,30));
+		miCuenta.add(etiquetitu);
+		
 		JLabel etiqueNombre = new JLabel("Nombre:");
 		etiqueNombre.setSize(200,30);
 		etiqueNombre.setLocation(10,100);
@@ -548,10 +554,10 @@ public class Ventana extends JFrame implements MouseListener {
 		crearUsuario.setLayout(null);
 		crearUsuario.setBackground(Color.decode("#B3FFF1"));
 		
-		JLabel etiqueTitulo = new JLabel("Crear Usuario");
-		etiqueTitulo.setSize(200,30);
-		etiqueTitulo.setLocation(10,50);
-		etiqueTitulo.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		JLabel etiqueTitulo = new JLabel("Crear Usuario",JLabel.CENTER);
+		etiqueTitulo.setSize(400,40);
+		etiqueTitulo.setLocation(50,50);
+		etiqueTitulo.setFont(new Font("ABeeZee",Font.PLAIN,30));
 		crearUsuario.add(etiqueTitulo);
 		
 		//ELEMENTOS DE LA CUENTA DEL USUARIO//
@@ -699,17 +705,17 @@ public class Ventana extends JFrame implements MouseListener {
 		
 		JLabel etiqueLista = new JLabel("Editar");
 		etiqueLista.setSize(200,30);
-		etiqueLista.setLocation(10,120);
+		etiqueLista.setLocation(50,120);
 		etiqueLista.setFont(new Font("ABeeZee",Font.PLAIN,20));
 		listaUsuarios.add(etiqueLista);
 		
 		JComboBox<String> comboListaUsuarios = comboBoxEditar();
 		comboListaUsuarios.setSize(400,30);
-		comboListaUsuarios.setLocation(10,150);
+		comboListaUsuarios.setLocation(50,150);
 		listaUsuarios.add(comboListaUsuarios);
 		
 		JButton btnEditar = new JButton("Elija un nombre de la lista para editar");
-		btnEditar.setLocation(10,190);
+		btnEditar.setLocation(100,190);
 		btnEditar.setSize(300,30);
 		listaUsuarios.add(btnEditar);
 		
