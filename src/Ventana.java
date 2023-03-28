@@ -1275,5 +1275,5 @@ public class Ventana extends JFrame implements MouseListener {
 	public void mouseExited(MouseEvent e) {
 		
 	}
-	
+	//COMENTARIO
 }
