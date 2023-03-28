@@ -39,7 +39,7 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
-public class Login extends JFrame implements MouseListener {
+public class Ventana extends JFrame implements MouseListener {
 	
 	//VARIABLES GLOBALES
 	private String anterior,actual,correoQueIngresoAlSistema,nombreQueIngresoAlSistema,apellidosQueIngresoAlSistema,contrasenaQueIngresoAlSistema,opcionSelecionada;
@@ -48,7 +48,7 @@ public class Login extends JFrame implements MouseListener {
 	
 	JPanel listaUsuarios = new JPanel();
 	
-	public Login() throws IOException {
+	public Ventana() throws IOException {
 
 		//Crear ventana
 		this.setVisible(true);
@@ -1082,7 +1082,7 @@ public class Login extends JFrame implements MouseListener {
 					
 					if (buscador[2].equals(antiguoCorreo)) {
 						ingresarDatos(nuevoArchivo, nuevoNombre, nuevosApellidos, nuevoCorreo, nuevaContrasena);
-						if (opcionUsuarioINGREUsuarioEnElTXT==1) {
+						if (opcionUsuarioINGREUsuarioEnElTXT==1 || antiguoCorreo.equals(correoQueIngresoAlSistema)) {
 							nombreQueIngresoAlSistema = nuevoNombre;
 							apellidosQueIngresoAlSistema = nuevosApellidos;
 							correoQueIngresoAlSistema = nuevoCorreo;
@@ -1223,7 +1223,8 @@ public class Login extends JFrame implements MouseListener {
 			
 				String[] opciones = {"Si","No"};
 				int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea eliminar al usuario "+nombre+"?","Borrar usuario", JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE);
-				if (respuesta==0) {
+				int numFilas = datos.getRowCount();
+				if (respuesta==0 && numFilas>1) {
 					try {
 						borrarUsuario(archivo,nombre);
 						DefaultTableModel dtm = (DefaultTableModel) datos.getModel();
@@ -1237,6 +1238,8 @@ public class Login extends JFrame implements MouseListener {
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
+				}else {
+					JOptionPane.showMessageDialog(null,"El documento no se puede quedar sin ningun usuario dentro","Error al eliminar el usuario",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
