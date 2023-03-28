@@ -391,59 +391,75 @@ public class Login extends JFrame {
 		miCuenta.setBackground(Color.decode("#B3FFF1"));
 		
 		//ELEMENTOS DE LA CUENTA DEL USUARIO//
+		JLabel tituloreg = new JLabel("Como crear un usuario:");
+		tituloreg.setSize(500,30);
+		tituloreg.setLocation(80,50);
+		tituloreg.setFont(new Font("ABeeZee",Font.BOLD,30));
+		tituloreg.setForeground(Color.decode("#00290B"));
+		this.add(tituloreg);
+
 		JLabel etiqueNombre = new JLabel("Nombre:");
 		etiqueNombre.setSize(200,30);
-		etiqueNombre.setLocation(10,100);
+		etiqueNombre.setLocation(15,250);
 		etiqueNombre.setFont(new Font("ABeeZee",Font.PLAIN,20));
-		miCuenta.add(etiqueNombre);
+		etiqueNombre.setForeground(Color.decode("#00290B"));
+		this.add(etiqueNombre);
 		
-		JTextField ingreNombre = new JTextField(nombreQueIngresoAlSistema);
-		ingreNombre.setSize(200,30);
-		ingreNombre.setLocation(10,140);
-		miCuenta.add(ingreNombre);
+		JTextField ingreNombre = new JTextField();
+		ingreNombre.setSize(430,30);
+		ingreNombre.setLocation(15,280);
+		this.add(ingreNombre);
 		
 		JLabel etiqueApellidos = new JLabel("Apellidos:");
 		etiqueApellidos.setSize(200,30);
-		etiqueApellidos.setLocation(10,180);
+		etiqueApellidos.setLocation(15,320);
 		etiqueApellidos.setFont(new Font("ABeeZee",Font.PLAIN,20));
-		miCuenta.add(etiqueApellidos);
+		etiqueApellidos.setForeground(Color.decode("#00290B"));
+		this.add(etiqueApellidos);
 		
-		JTextField ingreApellidos = new JTextField(apellidosQueIngresoAlSistema);
-		ingreApellidos.setSize(200,30);
-		ingreApellidos.setLocation(10,220);
-		miCuenta.add(ingreApellidos);
+		JTextField ingreApellidos = new JTextField();
+		ingreApellidos.setSize(430,30);
+		ingreApellidos.setLocation(15,350);
+		this.add(ingreApellidos);
 		
 		JLabel etiqueCorreo = new JLabel("Correo:");
 		etiqueCorreo.setSize(200,30);
-		etiqueCorreo.setLocation(10,260);
+		etiqueCorreo.setLocation(15,380);
 		etiqueCorreo.setFont(new Font("ABeeZee",Font.PLAIN,20));
-		miCuenta.add(etiqueCorreo);
+		etiqueCorreo.setForeground(Color.decode("#00290B"));
+		this.add(etiqueCorreo);
 		
-		JTextField ingreCorreo = new JTextField(correoQueIngresoAlSistema);
-		ingreCorreo.setSize(200,30);
-		ingreCorreo.setLocation(10,300);
-		miCuenta.add(ingreCorreo);
+		JTextField ingreCorreo = new JTextField();
+		ingreCorreo.setSize(430,30);
+		ingreCorreo.setLocation(15,415);
+		this.add(ingreCorreo);
 		
 		JLabel etiqueContrasena = new JLabel("Contraseña:");
 		etiqueContrasena.setSize(200,30);
-		etiqueContrasena.setLocation(10,340);
+		etiqueContrasena.setLocation(15,450);
 		etiqueContrasena.setFont(new Font("ABeeZee",Font.PLAIN,20));
-		miCuenta.add(etiqueContrasena);
+		etiqueContrasena.setForeground(Color.decode("#00290B"));
+		this.add(etiqueContrasena);
 		
-		JTextField ingreContrasena = new JTextField(contrasenaQueIngresoAlSistema);
-		ingreContrasena.setSize(200,30);
-		ingreContrasena.setLocation(10,380);
-		miCuenta.add(ingreContrasena);
+		JTextField ingreContrasena = new JTextField();
+		ingreContrasena.setSize(430,30);
+		ingreContrasena.setLocation(15,500);
+		this.add(ingreContrasena);
 		
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.setSize(200,50);
-		btnCancelar.setLocation(10,420);
-		miCuenta.add(btnCancelar);
+		btnCancelar.setLocation(15,560);
+		btnCancelar.setBackground(Color.decode("#F7292C"));
+		btnCancelar.setForeground(Color.decode("#731314"));
+		this.add(btnCancelar);
 		
 		JButton btnActualizarDatos = new JButton("Actualizar Datos");
 		btnActualizarDatos.setSize(200,50);
-		btnActualizarDatos.setLocation(250,420);
-		miCuenta.add(btnActualizarDatos);
+		btnActualizarDatos.setLocation(250,560);
+		btnActualizarDatos.setBackground(Color.decode("#7795FF"));
+		btnActualizarDatos.setForeground(Color.decode("#344270"));
+		this.add(btnActualizarDatos);
+
 		
 		//ACCIONES DEL BARRA MENU/////////////////////////////////////////////////////////////////////////////
 		btnCancelar.addActionListener(new ActionListener() {
