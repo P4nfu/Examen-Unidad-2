@@ -5,6 +5,10 @@ import java.awt.Font;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,6 +24,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -28,15 +33,20 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 
-public class Login extends JFrame {
+public class Login extends JFrame implements MouseListener {
 	
 	//VARIABLES GLOBALES
-	private String anterior,actual,correoQueIngresoAlSistema,nombreQueIngresoAlSistema,apellidosQueIngresoAlSistema,contrasenaQueIngresoAlSistema;
+	private String anterior,actual,correoQueIngresoAlSistema,nombreQueIngresoAlSistema,apellidosQueIngresoAlSistema,contrasenaQueIngresoAlSistema,opcionSelecionada;
 	private JPanel panel;
 	private File archivo = new File("users.txt");
+	
+	JPanel listaUsuarios = new JPanel();
 	
 	public Login() throws IOException {
 
@@ -106,13 +116,31 @@ public class Login extends JFrame {
             
             this.repaint();
             this.revalidate();
-    }
+		}
     
-    if (actual.equals("ayuda")) {
+		if (actual.equals("ayuda")) {
             panel = ayudaUs();
 			
 			this.add(panel);
 			
+			this.repaint();
+			this.revalidate();
+		}
+    
+		if (actual.equals("lista usuarios")) {
+			panel = listaDeUsuarios();
+		
+			this.add(panel);
+		
+			this.repaint();
+			this.revalidate();
+		}
+		
+		if (actual.equals("editar usuario")) {
+			panel = editarUnUsuario();
+		
+			this.add(panel);
+		
 			this.repaint();
 			this.revalidate();
 		}
@@ -378,6 +406,40 @@ public class Login extends JFrame {
 			}
 		});
 		
+		itemUsuariosListaDeUsua.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				etiqueBienvenida.setVisible(false);
+				
+				anterior = actual;
+				actual = "lista usuarios";
+				
+				try {
+					limpiarPaneles();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		itemCuentaCerrarSesion.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				anterior = actual;
+				actual = "login";
+				
+				remove(barra);
+				
+				try {
+					limpiarPaneles();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
 		this.repaint();
 		this.revalidate();
 		return menu;
@@ -446,7 +508,7 @@ public class Login extends JFrame {
 		btnActualizarDatos.setLocation(250,420);
 		miCuenta.add(btnActualizarDatos);
 		
-		//ACCIONES DEL BARRA MENU/////////////////////////////////////////////////////////////////////////////
+		//ACCIONES DE LOS BOTONES/////////////////////////////////////////////////////////////////////////////
 		btnCancelar.addActionListener(new ActionListener() {
 			
 			@Override
@@ -466,7 +528,7 @@ public class Login extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					actualizarDatos(ingreNombre.getText(),ingreApellidos.getText(),ingreCorreo.getText(),correoQueIngresoAlSistema,ingreContrasena.getText());
+					actualizarDatos(ingreNombre.getText(),ingreApellidos.getText(),ingreCorreo.getText(),correoQueIngresoAlSistema,ingreContrasena.getText(),1);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -619,6 +681,234 @@ public class Login extends JFrame {
 		this.revalidate();
 		return crearUsuario;
 	}
+	
+	public JPanel listaDeUsuarios() throws IOException {
+		listaUsuarios.removeAll();
+		
+		listaUsuarios.setSize(500,700);
+		listaUsuarios.setLocation(0,0);
+		listaUsuarios.setVisible(true);
+		listaUsuarios.setLayout(null);
+		listaUsuarios.setBackground(Color.decode("#B3FFF1"));
+		
+		JLabel etiqueTitulo = new JLabel("Lista de usuarios",JLabel.CENTER);
+		etiqueTitulo.setSize(400,30);
+		etiqueTitulo.setLocation(50,50);
+		etiqueTitulo.setFont(new Font("ABeeZee",Font.PLAIN,30));
+		listaUsuarios.add(etiqueTitulo);
+		
+		JLabel etiqueLista = new JLabel("Editar");
+		etiqueLista.setSize(200,30);
+		etiqueLista.setLocation(10,120);
+		etiqueLista.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		listaUsuarios.add(etiqueLista);
+		
+		JComboBox<String> comboListaUsuarios = comboBoxEditar();
+		comboListaUsuarios.setSize(400,30);
+		comboListaUsuarios.setLocation(10,150);
+		listaUsuarios.add(comboListaUsuarios);
+		
+		JButton btnEditar = new JButton("Elija un nombre de la lista para editar");
+		btnEditar.setLocation(10,190);
+		btnEditar.setSize(300,30);
+		listaUsuarios.add(btnEditar);
+		
+		//ELEMENTOS PARA CONSTRUIR LA TABLA
+		JScrollPane tabla = tabladeDatos();
+		listaUsuarios.add(tabla);
+
+		//ACCIONES PARA EDITAR A UN USUARIO//////////////////////////////////////////////////
+		comboListaUsuarios.addItemListener(new ItemListener() {
+			
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (comboListaUsuarios.getSelectedIndex()!=0) {
+					opcionSelecionada = comboListaUsuarios.getSelectedItem().toString();
+					btnEditar.setText("Editar a '"+opcionSelecionada+"'");
+				}
+			}
+		});
+		btnEditar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (comboListaUsuarios.getSelectedIndex()!=0) {
+					anterior = actual;
+					actual = "editar usuario";
+					try {
+						limpiarPaneles();
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}else
+					JOptionPane.showMessageDialog(null,"Debe seleccionar un usuario para editarlo","Error al selecionar",JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		
+		this.repaint();
+		this.revalidate();
+		return listaUsuarios;
+	}
+	
+	//ELEMENTOS PARA CREAR LA TABLA////////////////////////////////////////////////////////////////////////
+	String[] columnas = {"Nombre(s)","Apellidos","Correo","Contraseña","Acciones"};
+	DefaultTableModel dtm = new DefaultTableModel(columnas,0) {
+		public boolean isCellEditable(int row, int column) { 
+			return false;
+		}
+	};
+	JTable datos = new JTable(dtm);
+	JScrollPane panelScroll = new JScrollPane(datos);
+	
+	public JScrollPane tabladeDatos() throws IOException {
+		File archivoIN = new File("users.txt");
+		datos.addMouseListener(this);		
+		panelScroll.setSize(450,250);
+		panelScroll.setLocation(20,250);
+		
+		String[] nuevaFila = new String[5];
+		BufferedReader bf = new BufferedReader(new FileReader(archivoIN));						
+		String temp = bf.readLine();
+		String[] buscador = temp.split(" ");
+		
+		String[] datosNew = {"","","","","BORRAR"};
+		
+		int count=0;
+		while(temp!=null) {
+
+			buscador = temp.split("-");
+			
+			for(int i=0;i<4;i++) {
+				if(dtm.getRowCount()<=count)
+					dtm.addRow(datosNew);
+				dtm.setValueAt(buscador[i], count, i);
+			}
+			count+=1;
+			
+			temp = bf.readLine();
+		}
+		count=0;
+		bf.close();
+		
+		this.repaint();
+		this.revalidate();
+		return panelScroll;
+	}
+	
+	public JPanel editarUnUsuario() throws IOException {//FUNCION COPIADA DE UNA EXISTENTE, CUIDADO
+		JPanel miCuenta = new JPanel();
+		miCuenta.setSize(500,700);
+		miCuenta.setLocation(0,0);
+		miCuenta.setVisible(true);
+		miCuenta.setLayout(null);
+		miCuenta.setBackground(Color.decode("#B3FFF1"));
+		
+		//PROCESO QUE ESTABLECE LAS VARIABLES INICALES
+		String[] datos = buscarNombre(opcionSelecionada);
+		
+		//ELEMENTOS DE LA CUENTA DEL USUARIO//
+		JLabel etiqueNombre = new JLabel("Nombre:");
+		etiqueNombre.setSize(200,30);
+		etiqueNombre.setLocation(10,100);
+		etiqueNombre.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		miCuenta.add(etiqueNombre);
+		
+		JTextField ingreNombre = new JTextField(datos[0]);
+		ingreNombre.setSize(200,30);
+		ingreNombre.setLocation(10,140);
+		miCuenta.add(ingreNombre);
+		
+		JLabel etiqueApellidos = new JLabel("Apellidos:");
+		etiqueApellidos.setSize(200,30);
+		etiqueApellidos.setLocation(10,180);
+		etiqueApellidos.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		miCuenta.add(etiqueApellidos);
+		
+		JTextField ingreApellidos = new JTextField(datos[1]);
+		ingreApellidos.setSize(200,30);
+		ingreApellidos.setLocation(10,220);
+		miCuenta.add(ingreApellidos);
+		
+		JLabel etiqueCorreo = new JLabel("Correo:");
+		etiqueCorreo.setSize(200,30);
+		etiqueCorreo.setLocation(10,260);
+		etiqueCorreo.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		miCuenta.add(etiqueCorreo);
+		
+		JTextField ingreCorreo = new JTextField(datos[2]);
+		ingreCorreo.setSize(200,30);
+		ingreCorreo.setLocation(10,300);
+		miCuenta.add(ingreCorreo);
+		
+		JLabel etiqueContrasena = new JLabel("Contraseña:");
+		etiqueContrasena.setSize(200,30);
+		etiqueContrasena.setLocation(10,340);
+		etiqueContrasena.setFont(new Font("ABeeZee",Font.PLAIN,20));
+		miCuenta.add(etiqueContrasena);
+		
+		JTextField ingreContrasena = new JTextField(datos[3]);
+		ingreContrasena.setSize(200,30);
+		ingreContrasena.setLocation(10,380);
+		miCuenta.add(ingreContrasena);
+		
+		JButton btnCancelar = new JButton("Cancelar");
+		btnCancelar.setSize(200,50);
+		btnCancelar.setLocation(10,420);
+		miCuenta.add(btnCancelar);
+		
+		JButton btnActualizarDatos = new JButton("Actualizar Datos");
+		btnActualizarDatos.setSize(200,50);
+		btnActualizarDatos.setLocation(250,420);
+		miCuenta.add(btnActualizarDatos);
+		
+		//ACCIONES DE LOS BOTONES/////////////////////////////////////////////////////////////////////////////
+		btnCancelar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				actual = anterior;
+				try {
+					limpiarPaneles();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		btnActualizarDatos.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					actualizarDatos(ingreNombre.getText(),ingreApellidos.getText(),ingreCorreo.getText(),datos[2],ingreContrasena.getText(),2);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		this.repaint();
+		this.revalidate();
+		return miCuenta;
+	}
+	
+	public JComboBox<String> comboBoxEditar() throws IOException{
+		JComboBox<String> comboBoxEditar = new JComboBox<String>();
+		File archivoIN = new File("users.txt");
+		BufferedReader bf = new BufferedReader(new FileReader(archivoIN));
+		String linea;
+		
+		comboBoxEditar.addItem("Elija un usuario");//INICIA AQUI
+		while((linea = bf.readLine())!=null) {
+			String[] buscador = linea.split("-");
+			
+			comboBoxEditar.addItem(buscador[0]);
+			
+		}
+		bf.close();
+		
+		return comboBoxEditar;
+	}
 
 	public JPanel ayudaUs() {
 		JPanel ayudaUs = new JPanel();
@@ -740,12 +1030,12 @@ public class Login extends JFrame {
 		return resultado;
 	}
 	
-	public void actualizarDatos(String nombre,String apellidos,String correo,String antiguoCorreo,String contrasena) throws IOException {
+	public void actualizarDatos(String nombre,String apellidos,String correo,String antiguoCorreo,String contrasena,int opcion) throws IOException {
 		
-		if (correoQueIngresoAlSistema.equals(correo)) {
+		if (antiguoCorreo.equals(correo)) {
 			JOptionPane.showMessageDialog(null,"Es necesario cambiar el correo para realizar modificaciones","La informacion no se pudo actualizar",JOptionPane.WARNING_MESSAGE);
 		}else {
-			modificarArchivo(archivo, nombre, apellidos, correo, antiguoCorreo, contrasena);
+			modificarArchivo(archivo, nombre, apellidos, correo, antiguoCorreo, contrasena,opcion);
 			JOptionPane.showMessageDialog(null,"Datos actualizados"," ",JOptionPane.INFORMATION_MESSAGE);
 		}
 		
@@ -767,11 +1057,10 @@ public class Login extends JFrame {
 		}
 	}
 	
-	public void modificarArchivo(File fileAntiguo,String nuevoNombre,String nuevosApellidos,String nuevoCorreo,String antiguoCorreo,String nuevaContrasena) throws IOException {
+	public void modificarArchivo(File fileAntiguo,String nuevoNombre,String nuevosApellidos,String nuevoCorreo,String antiguoCorreo,String nuevaContrasena,int opcionUsuarioINGREUsuarioEnElTXT) throws IOException {
 		//NUEVO ARCHIVO Y LECTOR DEL DOCUMENTO TXT
 		Random numaleatorio = new Random(3816L);
 		String nFnuevo = "auxiliar"+".txt";
-		System.out.println(nFnuevo+" <--------------");
 		File nuevoArchivo = new File(nFnuevo);
 		if (!nuevoArchivo.exists())
 			nuevoArchivo.createNewFile();
@@ -793,10 +1082,12 @@ public class Login extends JFrame {
 					
 					if (buscador[2].equals(antiguoCorreo)) {
 						ingresarDatos(nuevoArchivo, nuevoNombre, nuevosApellidos, nuevoCorreo, nuevaContrasena);
-						nombreQueIngresoAlSistema = nuevoNombre;
-						apellidosQueIngresoAlSistema = nuevosApellidos;
-						correoQueIngresoAlSistema = nuevoCorreo;
-						contrasenaQueIngresoAlSistema = nuevaContrasena;
+						if (opcionUsuarioINGREUsuarioEnElTXT==1) {
+							nombreQueIngresoAlSistema = nuevoNombre;
+							apellidosQueIngresoAlSistema = nuevosApellidos;
+							correoQueIngresoAlSistema = nuevoCorreo;
+							contrasenaQueIngresoAlSistema = nuevaContrasena;
+						}
 					}
 					else {
 						escritor = new FileWriter(nuevoArchivo,true);
@@ -809,9 +1100,6 @@ public class Login extends JFrame {
 				br.close();
 				
 				if (fileAntiguo.delete()) {
-					System.out.println("El archivo se borro");
-				}else {
-					System.out.println("No se borro el srchivo");
 				}
 				
 				nuevoArchivo.renameTo(fileAntiguo);
@@ -840,6 +1128,26 @@ public class Login extends JFrame {
 		return resultado;
 	}
 	
+	public String[] buscarNombre(String nombre) throws IOException {
+		File archivoIN = new File("users.txt");
+		String[] datosEncontrados = new String[4];
+		BufferedReader bf = new BufferedReader(new FileReader(archivoIN));
+		String linea;
+		
+		while((linea = bf.readLine())!=null) {
+			String[] buscador = linea.split("-");
+			
+			if (nombre.equals(buscador[0])) {
+				for (int i=0;i<buscador.length;i++) {
+					datosEncontrados[i] = buscador[i];
+				}
+			}
+		}
+		bf.close();
+		
+		return datosEncontrados;
+	}
+	
 	public void ingresarDatos(File archivoIN,String nombre,String apellidos,String correo,String contrasena) throws IOException {
 		FileWriter escritor;
 		PrintWriter linea;
@@ -851,6 +1159,111 @@ public class Login extends JFrame {
 			linea.close();
 			escritor.close();
 		}
+		
+	}
+
+	public void borrarUsuario(File fileAntiguo,String nombre) throws IOException {
+		//NUEVO ARCHIVO Y LECTOR DEL DOCUMENTO TXT
+		Random numaleatorio = new Random(3816L);
+		String nFnuevo = "auxiliar"+".txt";
+		File nuevoArchivo = new File(nFnuevo);
+		if (!nuevoArchivo.exists())
+			nuevoArchivo.createNewFile();
+		BufferedReader br;
+		
+		//ESCRITOR DE DOCUMENTO
+		FileWriter escritor;
+		PrintWriter txtLinea;
+		
+		try {
+			
+			if (fileAntiguo.exists()) {
+				br = new BufferedReader(new FileReader(fileAntiguo));
+				
+				String linea;
+				
+				while((linea=br.readLine())!=null) {
+					String[] buscador = linea.split("-");
+					
+					if (buscador[0].equals(nombre)) {
+						//AL NO HACER NADA AL ENCONTRARLO LO ELIMINA
+					}
+					else {
+						escritor = new FileWriter(nuevoArchivo,true);
+						txtLinea = new PrintWriter(escritor);
+						txtLinea.println(linea);
+						txtLinea.close();
+						escritor.close();
+					}
+				}
+				br.close();
+				
+				if (fileAntiguo.delete()) {
+				}
+				
+				nuevoArchivo.renameTo(fileAntiguo);
+				
+			}
+			
+		}catch(Exception e) {}
+		
+	}
+	
+	int contador = 0;	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		contador+=1;
+		if(contador==1) {
+			int fila = datos.rowAtPoint(e.getPoint());
+			int columna = datos.columnAtPoint(e.getPoint());
+		
+			if (columna==4) {
+				DefaultTableModel tm = (DefaultTableModel) datos.getModel();
+				String nombre = String.valueOf(tm.getValueAt(datos.getSelectedRow(),0));
+			
+				String[] opciones = {"Si","No"};
+				int respuesta = JOptionPane.showConfirmDialog(null, "¿Desea eliminar al usuario "+nombre+"?","Borrar usuario", JOptionPane.OK_CANCEL_OPTION,JOptionPane.INFORMATION_MESSAGE);
+				if (respuesta==0) {
+					try {
+						borrarUsuario(archivo,nombre);
+						DefaultTableModel dtm = (DefaultTableModel) datos.getModel();
+						dtm.removeRow(datos.getSelectedRow()-1);
+					
+						anterior = actual;
+						actual = "lista usuarios";
+					
+						limpiarPaneles();
+					
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		int fila = datos.rowAtPoint(e.getPoint());
+		int columna = datos.columnAtPoint(e.getPoint());
+	
+		if (columna==4) {
+			contador = 0;
+		}
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
 		
 	}
 	
